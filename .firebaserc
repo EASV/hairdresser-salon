@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "hairdresser-salon-1d12f": {
+      "hosting": {
+        "hairdresser-salon": [
+          "hairdresser-salon-1d12f"
+        ]
+      }
+    }
+  }
+}

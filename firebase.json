@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "hairdresser-salon",
+      "public": "dist/hairdresser-salon",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

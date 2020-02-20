@@ -5,11 +5,11 @@ const routes: Routes =
   [
     { path: 'products',
       loadChildren: () =>
-        import('./products/products.module')
+        import('../products/products.module')
           .then(m => m.ProductsModule) },
     {path: 'welcome',
       loadChildren: () =>
-        import('./welcome/welcome.module')
+        import('../welcome/welcome.module')
           .then(m => m.WelcomeModule) },
     { path: '',
       redirectTo: '/welcome',
@@ -23,4 +23,4 @@ const routes: Routes =
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class PublicRoutingModule { }

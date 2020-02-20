@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
+import { PublicRoutingModule } from './public/public-routing.module';
 import { AppComponent } from './app.component';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
@@ -23,7 +23,6 @@ import {PublicModule} from './public/public.module';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     PublicModule
   ],

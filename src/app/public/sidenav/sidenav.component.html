@@ -1,1 +1,9 @@
-<p>sidenav works!</p>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="over">
+    Sidenav content
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

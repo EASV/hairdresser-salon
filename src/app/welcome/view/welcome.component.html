@@ -3,3 +3,46 @@
     {{product.name}}
   </li>
 </ul>
+
+
+<!--
+<mat-toolbar color="primary">
+  <button
+    mat-mini-fab
+    color="accent"
+    aria-label="menu"
+    (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav [disableClose]="false" mode="over" #sidenav>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        [routerLink]="['/']"
+        (click)="sidenav.close()"
+      >
+        <mat-icon matListAvatar>home</mat-icon>
+        <h3 matLine>Welcome</h3>
+        <p matLine>Go to welcome</p>
+      </a>
+    </mat-nav-list>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        [routerLink]="['/products']"
+        (click)="sidenav.close()"
+      >
+        <mat-icon matListAvatar>store</mat-icon>
+        <h3 matLine>Products</h3>
+        <p matLine>See all products</p>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+-->

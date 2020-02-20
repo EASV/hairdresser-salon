@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {SidenavComponent} from '../sidenav/sidenav.component';
 
 @Component({
@@ -7,9 +7,14 @@ import {SidenavComponent} from '../sidenav/sidenav.component';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
+  @Output()
+  toggleClicked = new EventEmitter();
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  toggleNav() {
+    this.toggleClicked.emit();
+  }
 }

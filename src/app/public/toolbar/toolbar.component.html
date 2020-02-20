@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Trine's Hair Salon</span>
+    <button (click)="toggleNav()" mat-mini-fab aria-label="Toggle nav">
+      <mat-icon>reorder</mat-icon>
+    </button>
+    <span style="margin-left: 5px;">Trine's Hair Salon</span>
   </mat-toolbar-row>
 </mat-toolbar>

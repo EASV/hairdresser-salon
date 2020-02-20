@@ -5,6 +5,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {PublicRoutingModule} from './public-routing.module';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -15,6 +18,9 @@ import {PublicRoutingModule} from './public-routing.module';
     CommonModule,
     MatToolbarModule,
     MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
     PublicRoutingModule
   ],
   exports: [

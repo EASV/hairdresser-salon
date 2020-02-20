@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'hairdresser-salon';
+  toggleState: boolean;
+  toggleNav() {
+    this.toggleState = !this.toggleState;
+  }
 }

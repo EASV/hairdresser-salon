@@ -1,5 +1,82 @@
-<ul>
-  <li *ngFor="let product of topProducts$ | async">
-    {{product.name}}
-  </li>
-</ul>
+<!--<ng-template #loading
+             class="main-component">
+  Velkommen til Salon Trine i Esbjerg...
+  <mat-progress-spinner
+    [color]="'primary'"
+    [mode]="'determinate'"
+    [value]="50">
+  </mat-progress-spinner>
+</ng-template>-->
+
+<div class="main-component"
+     fxLayout="column"
+     fxLayoutGap="2em">
+  <div [fxFlexOrder]="1"
+       class="banner"
+       fxFlex="150px"
+       fxLayoutAlign="center center"
+       [@simpleFadeAnimation]="'in'"
+       ngStyle.gt-sm="background-size: 600px;"
+       ngStyle.sm="background-size: 300px;"
+       ngStyle.xs="background-size: 240px;">
+    <h1 ngClass.gt-md="big-text"
+        ngClass.md="medium-text"
+        ngClass.sm="small-text">Velkommen til Salon Trine i Esbjerg</h1>
+  </div>
+  <div [fxFlexOrder]="2">
+    <h1>Vores {{limit}} mest solgte produkter</h1>
+    <div fxLayout="row wrap"
+         fxLayoutAlign="space-around center"
+         fxLayoutGap="4em grid">
+      <div [fxFlex]="cardWidth"
+           [fxFlex.sm]="cardWidth * 2"
+           [fxFlex.xs]="cardWidth * 2"
+           *ngFor="let product of topProducts$ | async ">
+        <mat-card (click)="goToDetails(product)"
+                  matRipple
+                  class="pointer-card">
+          <img mat-card-image
+               [@simpleFadeAnimation]="'in'"
+               [src]="product.url"
+               alt="Photo of {{product.name}}">
+          <mat-card-content class="last-child">
+            <mat-list>
+              <h1 mat-subheader>{{product.name}}</h1>
+              <h3 mat-subheader>Pris: {{product.price}},- DKK</h3>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div [fxFlexOrder]="3"
+       fxLayoutAlign="space-around center"
+       fxLayoutGap="4em grid"
+       fxLayout="row wrap">
+    <mat-divider fxFlex="100"></mat-divider>
+    <mat-list fxFlexOffset="20" fxFlex="60">
+      <div fxLayout="row">
+        <mat-list-item>
+          <h1 matLine>kontakt:</h1>
+          <h3 matLine>Tlf: 11111111</h3>
+          <h3 matLine>Mobil: 22222222</h3>
+        </mat-list-item>
+        <mat-list-item>
+          <h1 matLine>Adresse:</h1>
+          <h3 matLine>Møffebøffegade ostepops 12</h3>
+          <h3 matLine>0987 Øffebyen Vest</h3>
+        </mat-list-item>
+        <mat-list-item>
+          <h1 matLine>Åbningstider:</h1>
+          <h3 matLine>Mandag-Onsdag: kl. 09.00-12.45</h3>
+          <h3 matLine>Torsdag-søndag: kl. 09.00-23.45</h3>
+        </mat-list-item>
+      </div>
+    </mat-list>
+  </div>
+</div>
+
+
+
+
+

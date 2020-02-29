@@ -1,0 +1,59 @@
+<div fxLayout="row" class="main-component">
+  <div fxFlex="40" fxLayout="column" fxFlexOffset="30" fxLayoutGap="2em">
+    <div>
+      <form [formGroup]="loginForm">
+        <mat-card fxLayout="column wrap" fxLayoutGap="1em">
+          <h1 fxFlexAlign="center">
+            Login with Email and Password
+          </h1>
+          <mat-form-field fxFlexFill>
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="type email here" formControlName="email" fxFlex="50" >
+          </mat-form-field>
+          <mat-form-field fxFlexFill>
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="Type password here" formControlName="password" fxFlex="50">
+          </mat-form-field>
+          <button mat-raised-button (click)="loginWithEmail()">Sign-In</button>
+          <div fxLayout="row" fxFlexAlign="end">
+            <button (click)="forgotPassword()" mat-button>Help me, I forgot my password</button>
+          </div>
+
+        </mat-card>
+      </form>
+    </div>
+    <div>
+      <mat-card>
+        <mat-card-content>
+          <h2 fxFlexAlign="center">
+            You can also sign in with
+          </h2>
+          <div fxLayout="column" fxLayoutGap="1em">
+            <h2>
+              <button fxFlexFill (click)="loginWithGoogle()" mat-flat-button color="primary">
+                <mat-icon fontSet="fab" fontIcon="fa-google" style="font-size: 2em"></mat-icon>
+                <span style="margin-right: 1.5em"> Google </span>
+              </button>
+            </h2>
+            <h2>
+              <button fxFlexFill (click)="loginWithFaceBook()" mat-flat-button color="accent">
+                <mat-icon fontSet="fab" fontIcon="fa-facebook"  style="font-size: 2em"></mat-icon>
+                Facebook
+              </button>
+            </h2>
+            <h2>
+              <button fxFlexFill (click)="loginWithTwitter()" mat-flat-button color="warn">
+                <mat-icon fontSet="fab" fontIcon="fa-twitter"  style="font-size: 2em"></mat-icon>
+                <span style="margin-right: 1.5em"> Twitter </span>
+
+              </button>
+            </h2>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+
+</div>

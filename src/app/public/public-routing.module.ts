@@ -11,6 +11,10 @@ const routes: Routes =
       loadChildren: () =>
         import('../welcome/welcome.module')
           .then(m => m.WelcomeModule) },
+    {path: 'auth',
+      loadChildren: () =>
+        import('../auth/auth.module')
+          .then(m => m.AuthModule) },
     { path: '',
       redirectTo: '/welcome',
       pathMatch: 'full' },

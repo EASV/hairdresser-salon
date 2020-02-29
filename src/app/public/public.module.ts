@@ -8,6 +8,7 @@ import {PublicRoutingModule} from './public-routing.module';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
+import {AuthModule} from '../auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {MatListModule} from '@angular/material/list';
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    PublicRoutingModule
+    PublicRoutingModule,
+    AuthModule
   ],
   exports: [
     ToolbarComponent,

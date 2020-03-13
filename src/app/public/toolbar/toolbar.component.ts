@@ -1,9 +1,10 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {SidenavComponent} from '../sidenav/sidenav.component';
 import {AuthService} from '../../auth/shared/auth.service';
 import {AuthUser} from '../../auth/shared/auth-user';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-innotech-toolbar',
@@ -11,18 +12,15 @@ import {Router} from '@angular/router';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-  authUser: AuthUser;
+  authUser$: Observable<AuthUser>;
   @Output()
   toggleClicked = new EventEmitter();
   constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.
-      authUser()
-        .subscribe(user => {
-            this.authUser = user;
-        });
+    this.authUser$ = this.authService.
+      authUser();
   }
 
   toggleNav() {
@@ -36,5 +34,4 @@ export class ToolbarComponent implements OnInit {
   hasRoute(route: string) {
     return this.router.url.includes(route);
   }
-
 }

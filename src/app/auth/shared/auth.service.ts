@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {auth, User} from 'firebase/app';
 import {AuthUser} from './auth-user';
-import {BehaviorSubject, from, Observable, Subject} from 'rxjs';
-import {first, map} from 'rxjs/operators';
-import UserCredential = firebase.auth.UserCredential;
-
+import {from, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

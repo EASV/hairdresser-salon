@@ -11,15 +11,15 @@ import {map} from 'rxjs/operators';
 export class AuthService {
   constructor(private afa: AngularFireAuth) {}
 
-  loginGoogle() {
-    from(this.afa.auth.signInWithPopup(new auth.GoogleAuthProvider()))
+  loginGoogle(): Observable<AuthUser> {
+    return from(this.afa.auth.signInWithPopup(new auth.GoogleAuthProvider()))
      .pipe(
        map(credentials => this.firebaseUserToAuthUser(credentials.user))
      );
   }
 
-  logout() {
-    this.afa.auth.signOut();
+  logout(): Observable<void> {
+    return from(this.afa.auth.signOut());
   }
 
   authUser(): Observable<AuthUser> {

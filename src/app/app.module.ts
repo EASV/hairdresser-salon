@@ -7,6 +7,10 @@ import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {PublicModule} from './public/public.module';
+import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
+import {NgxsModule} from '@ngxs/store';
+import {AuthState} from './auth/shared/auth.state';
 
 @NgModule({
   declarations: [
@@ -17,9 +21,13 @@ import {PublicModule} from './public/public.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     BrowserAnimationsModule,
-    PublicModule
+    PublicModule,
+    NgxsModule.forRoot([AuthState]
+      , { developmentMode: !environment.production }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,10 +1,10 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {SidenavComponent} from '../sidenav/sidenav.component';
-import {AuthService} from '../../auth/shared/auth.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AuthUser} from '../../auth/shared/auth-user';
-import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import {Observable} from 'rxjs';
+import {Select, Store} from '@ngxs/store';
+import {AuthState} from '../../auth/shared/auth.state';
+import {Logout} from '../../auth/shared/auth.action';
 
 @Component({
   selector: 'app-innotech-toolbar',
@@ -12,15 +12,13 @@ import {Observable, Subscription} from 'rxjs';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-  authUser$: Observable<AuthUser>;
+  @Select(AuthState.loggedInUser) loggedInUser$: Observable<AuthUser>;
   @Output()
   toggleClicked = new EventEmitter();
-  constructor(private authService: AuthService,
-              private router: Router) { }
+  constructor(private router: Router,
+              private store: Store) { }
 
   ngOnInit(): void {
-    this.authUser$ = this.authService.
-      authUser();
   }
 
   toggleNav() {
@@ -28,7 +26,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
+    this.store.dispatch(new Logout());
   }
 
   hasRoute(route: string) {

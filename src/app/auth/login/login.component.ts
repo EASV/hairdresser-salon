@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../shared/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Store} from '@ngxs/store';
+import {LoginWithGoogle} from '../shared/auth.action';
 
 @Component({
   selector: 'app-innotech-login',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private authService: AuthService,
+  constructor(private store: Store,
               private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -25,7 +27,8 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithGoogle() {
-    this.authService.loginGoogle();
+    debugger;
+    this.store.dispatch(new LoginWithGoogle());
   }
 
   loginWithFaceBook() {

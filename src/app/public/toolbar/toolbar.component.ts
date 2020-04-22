@@ -1,9 +1,12 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {SidenavComponent} from '../sidenav/sidenav.component';
+import {AuthService} from '../../auth/shared/auth.service';
 import {AuthUser} from '../../auth/shared/auth-user';
+import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {Select, Store} from '@ngxs/store';
+import {Observable, Subscription} from 'rxjs';
 import {AuthState} from '../../auth/shared/auth.state';
+import {Select, Store} from '@ngxs/store';
 import {Logout} from '../../auth/shared/auth.action';
 
 @Component({
@@ -12,11 +15,13 @@ import {Logout} from '../../auth/shared/auth.action';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-  @Select(AuthState.loggedInUser) loggedInUser$: Observable<AuthUser>;
+
+  @Select(AuthState.loggedInUser)
+  authUser$: Observable<AuthUser>;
   @Output()
   toggleClicked = new EventEmitter();
-  constructor(private router: Router,
-              private store: Store) { }
+  constructor(private store: Store,
+              private router: Router) { }
 
   ngOnInit(): void {
   }

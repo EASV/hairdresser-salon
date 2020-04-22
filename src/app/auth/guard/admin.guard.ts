@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
 import { Observable } from 'rxjs';
-import {AuthService} from '../shared/auth.service';
 import {map} from 'rxjs/operators';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {AuthState} from '../shared/auth.state';
 import {AuthUser} from '../shared/auth-user';
+import {Navigate} from '@ngxs/router-plugin';
+import {GoToRoute} from '../../public/shared/route.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
-  @Select(AuthState.loggedInUser) loggedInUser$: Observable<AuthUser>;
-  constructor(private router: Router) {}
+  @Select(AuthState.loggedInUser)
+  authUser$: Observable<AuthUser>;
+
+  constructor(private router: Router,
+              private store: Store) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot):
+    routeState: RouterStateSnapshot):
      Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('AuthGuard#canActivate called');
-    return this.loggedInUser$.pipe(
+    return this.authUser$
+      .pipe(
         map(authUser => {
           if (authUser === undefined) {
-            this.router.navigateByUrl('auth/login');
+            this.store.dispatch(new GoToRoute('auth/login', {queryParams: {redirect: routeState.url}}));
             return false;
           }
           return authUser !== undefined;

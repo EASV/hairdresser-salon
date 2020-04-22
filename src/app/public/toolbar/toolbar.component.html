@@ -5,10 +5,10 @@
     </button>
     <span style="margin-left: 5px;">Trine's Hair Salon</span>
     <span class="bar-spacer"></span>
-    <button *ngIf="!(loggedInUser$ | async) && !hasRoute('auth/login')" routerLink="auth/login" mat-flat-button color="primary" aria-label="Sign-in">
+    <button *ngIf="!(authUser$ | async) && !hasRoute('auth/login')" routerLink="auth/login" mat-flat-button color="primary" aria-label="Sign-in">
       <mat-icon>lock</mat-icon> Login
     </button>
-    <button *ngIf="(loggedInUser$ | async)" (click)="logout()" mat-flat-button color="accent" aria-label="Sign-out">
+    <button *ngIf="(authUser$ | async)" (click)="logout()" mat-flat-button color="accent" aria-label="Sign-out">
       <mat-icon>lock_open</mat-icon> Logout
     </button>
   </mat-toolbar-row>

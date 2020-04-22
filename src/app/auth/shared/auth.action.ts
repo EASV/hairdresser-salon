@@ -1,5 +1,3 @@
-import {AuthUser} from './auth-user';
-
 export class LoginWithGoogle {
   static readonly type = '[Auth] LoginWithGoogle';
 
@@ -12,6 +10,8 @@ export class Logout {
   constructor() {}
 }
 
-export class GetAuthUser {
-  static readonly type = '[Auth] GetAuthUser';
-}
+/*export class LoginInWithEmail {
+  static readonly type = '[Auth] LoginInWithEmail';
+
+  constructor(public authUser: AuthUser) {}
+}*/

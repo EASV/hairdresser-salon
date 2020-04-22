@@ -26,6 +26,7 @@
     "@fortawesome/fontawesome-free": "^5.12.1",
     "@ngxs/devtools-plugin": "^3.6.2",
     "@ngxs/logger-plugin": "^3.6.2",
+    "@ngxs/router-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
     "firebase": "^7.14.0",
     "ng-lazyload-image": "^7.1.0",

@@ -11,6 +11,8 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsModule} from '@ngxs/store';
 import {AuthState} from './auth/shared/auth.state';
+import {RouteState} from './public/shared/route.state';
+import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,9 @@ import {AuthState} from './auth/shared/auth.state';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     PublicModule,
-    NgxsModule.forRoot([AuthState]
+    NgxsModule.forRoot([AuthState, RouteState]
       , { developmentMode: !environment.production }),
+   // NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot()
   ],

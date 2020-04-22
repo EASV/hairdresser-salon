@@ -13,10 +13,14 @@ import {NgxsModule} from '@ngxs/store';
 import {AuthState} from './auth/shared/auth.state';
 import {RouteState} from './public/shared/route.state';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
+import {ProductState} from './products/shared/product.state';
+import { CreateProductComponent } from './products/create/create-product.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
@@ -24,11 +28,15 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     PublicModule,
-    NgxsModule.forRoot([AuthState, RouteState]
-      , { developmentMode: !environment.production }),
-   // NgxsRouterPluginModule.forRoot(),
+    NgxsModule.forRoot([
+        AuthState,
+        RouteState,
+        ProductState]
+      , {developmentMode: !environment.production}),
+    // NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot()
+    NgxsLoggerPluginModule.forRoot(),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

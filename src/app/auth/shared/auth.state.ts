@@ -46,7 +46,9 @@ export class AuthState {
             userName: result.displayName
           });
           const navigationExtras = this.store.selectSnapshot(RouteState.currentNavigationExtras);
-          ctx.dispatch(new GoToRoute(navigationExtras.queryParams.redirect, navigationExtras));
+          if (navigationExtras && navigationExtras.queryParams) {
+            ctx.dispatch(new GoToRoute(navigationExtras.queryParams.redirect, navigationExtras));
+          }
         })
       );
   }

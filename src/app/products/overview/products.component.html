@@ -1,0 +1,11 @@
+<div *ngIf="!(requestSent$ | async)">
+  <h1>Products Overview</h1>
+  <div *ngFor="let product of products$ | async ">
+    <p>{{product.name}}</p>
+    <p>{{product.id}}</p>
+    <button (click)="deleteProduct(product)">Delete</button>
+  </div>
+</div>
+<div *ngIf="(requestSent$ | async)">
+  <h1>Loading......</h1>
+</div>

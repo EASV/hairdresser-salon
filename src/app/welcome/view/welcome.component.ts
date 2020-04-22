@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {Product} from '../../products/shared/product';
 import {first} from 'rxjs/operators';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Select} from '@ngxs/store';
+import {ProductState} from '../../products/shared/product.state';
 
 @Component({
   selector: 'app-welcome',

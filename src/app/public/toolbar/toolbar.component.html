@@ -4,6 +4,7 @@
       <mat-icon>reorder</mat-icon>
     </button>
     <span style="margin-left: 5px;">Trine's Hair Salon</span>
+    <span style="margin-left: 5px;">{{(products$ | async).length}}</span>
     <span class="bar-spacer"></span>
     <button *ngIf="!(authUser$ | async) && !hasRoute('auth/login')" routerLink="auth/login" mat-flat-button color="primary" aria-label="Sign-in">
       <mat-icon>lock</mat-icon> Login

@@ -9,22 +9,26 @@ const products: Product[] = [
   {
     id: 'FWtINWPUt5RZA3QVdVhh',
     name: 'Black Hair Dye',
-    price: 30
+    price: 30,
+    url: ''
   },
   {
     id: 'RkZyGpUQ54XGIJZYgWXX',
     name: 'Extensions',
-    price: 20
+    price: 20,
+    url: ''
   },
   {
     id: 'UBhQTgXac67nDi4Lcths',
     name: 'Shave',
-    price: 10
+    price: 10,
+    url: ''
   },
   {
     id: 'FWtINWPUt5RZA3QVdVhh',
     name: 'Haircut',
-    price: 22
+    price: 22,
+    url: ''
   }
 ];
 

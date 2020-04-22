@@ -12,15 +12,12 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsModule} from '@ngxs/store';
 import {AuthState} from './auth/shared/auth.state';
 import {RouteState} from './public/shared/route.state';
-import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {ProductState} from './products/shared/product.state';
-import { CreateProductComponent } from './products/create/create-product.component';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CreateProductComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,9 @@
 import {AuthUser} from './auth-user';
-import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {AuthService} from './auth.service';
 import {LoginWithGoogle, Logout} from './auth.action';
-import {switchMap, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {RouteState} from '../../public/shared/route.state';
-import {GoToRoute} from '../../public/shared/route.action';
 
 export class AuthStateModel {
   loggedInUser: AuthUser;
@@ -22,7 +20,7 @@ export class AuthStateModel {
 @Injectable()
 export class AuthState {
 
-  constructor(private authService: AuthService, private store: Store) {}
+  constructor(private authService: AuthService) {}
 
   @Selector()
   static loggedInUser(state: AuthStateModel) {
@@ -45,10 +43,6 @@ export class AuthState {
             loggedInUser: result,
             userName: result.displayName
           });
-          const navigationExtras = this.store.selectSnapshot(RouteState.currentNavigationExtras);
-          if (navigationExtras && navigationExtras.queryParams) {
-            ctx.dispatch(new GoToRoute(navigationExtras.queryParams.redirect, navigationExtras));
-          }
         })
       );
   }

@@ -11,9 +11,9 @@ import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {NgxsModule} from '@ngxs/store';
 import {AuthState} from './auth/shared/auth.state';
-import {RouteState} from './public/shared/route.state';
 import {ProductState} from './products/shared/product.state';
 import {FormsModule} from '@angular/forms';
+import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 
 @NgModule({
   declarations: [
@@ -27,10 +27,9 @@ import {FormsModule} from '@angular/forms';
     PublicModule,
     NgxsModule.forRoot([
         AuthState,
-        RouteState,
         ProductState]
       , {developmentMode: !environment.production}),
-    // NgxsRouterPluginModule.forRoot(),
+    NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     FormsModule

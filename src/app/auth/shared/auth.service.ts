@@ -4,26 +4,12 @@ import {auth, User} from 'firebase/app';
 import {AuthUser} from './auth-user';
 import {from, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {NavigationExtras} from '@angular/router';
-
-export enum Providers {
-  Google = 'google'
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   constructor(private afa: AngularFireAuth) {}
-
-  login(provider: Providers, redirect: string, navExtras: NavigationExtras): Observable<AuthUser> {
-    switch (provider) {
-      case Providers.Google:
-        return this.loginGoogle();
-      default:
-        throw new Error('Login provider not found');
-    }
-  }
 
   loginGoogle(): Observable<AuthUser> {
     return from(this.afa.auth.signInWithPopup(new auth.GoogleAuthProvider()))

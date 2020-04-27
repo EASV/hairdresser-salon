@@ -3,6 +3,8 @@ import {Store} from '@ngxs/store';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CreateProduct} from '../shared/product.action';
 import {Product} from '../shared/product';
+import {Navigate} from '@ngxs/router-plugin';
+import {routingConstants} from '../../public/shared/constants';
 
 @Component({
   selector: 'app-innotech-product-create',
@@ -24,5 +26,9 @@ export class ProductCreateComponent implements OnInit {
   submit() {
     const product = this.createForm.value as Product;
     this.store.dispatch(new CreateProduct(product));
+  }
+
+  gotToOverview() {
+    this.store.dispatch(new Navigate([routingConstants.products]));
   }
 }

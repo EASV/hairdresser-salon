@@ -1,10 +1,21 @@
 <div class="main-component"
      fxLayout="column"
      fxLayoutGap="2em">
+  <div [fxFlexOrder]="1">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <h1>Products Overview</h1>
+        <span style="margin-left: 10px"></span>
+        <button mat-raised-button color="accent"
+                aria-label="Create Product"
+                (click)="gotToAdd()">
+          <mat-icon>add</mat-icon> Add Product
+        </button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
   <div [fxFlexOrder]="2">
-    <h1>Products Overview</h1>
     <div fxLayout="row wrap"
-         fxLayoutAlign="space-around center"
          fxLayoutGap="4em grid">
       <div [fxFlex]="cardWidth"
            [fxFlex.sm]="cardWidth * 2"

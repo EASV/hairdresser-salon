@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import {routingConstants} from '../public/shared/constants';
 
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent}
+  { path: routingConstants.login, component: LoginComponent}
 ];
 
 @NgModule({

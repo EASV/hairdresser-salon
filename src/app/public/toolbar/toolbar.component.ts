@@ -19,8 +19,6 @@ import {GetAllProducts} from '../../products/shared/product.action';
 })
 export class ToolbarComponent implements OnInit {
 
-  @Select(ProductState.products)
-  products$: Observable<Product[]>;
   @Select(AuthState.loggedInUser)
   authUser$: Observable<AuthUser>;
   @Output()
@@ -28,9 +26,7 @@ export class ToolbarComponent implements OnInit {
   constructor(private store: Store,
               private router: Router) { }
 
-  ngOnInit(): void {
-    this.store.dispatch(new GetAllProducts());
-  }
+  ngOnInit(): void {}
 
   toggleNav() {
     this.toggleClicked.emit();

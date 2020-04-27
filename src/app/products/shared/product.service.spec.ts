@@ -7,25 +7,25 @@ import {first} from 'rxjs/operators';
 
 const products: Product[] = [
   {
-    id: 'FWtINWPUt5RZA3QVdVhh',
+    uId: 'FWtINWPUt5RZA3QVdVhh',
     name: 'Black Hair Dye',
     price: 30,
     url: ''
   },
   {
-    id: 'RkZyGpUQ54XGIJZYgWXX',
+    uId: 'RkZyGpUQ54XGIJZYgWXX',
     name: 'Extensions',
     price: 20,
     url: ''
   },
   {
-    id: 'UBhQTgXac67nDi4Lcths',
+    uId: 'UBhQTgXac67nDi4Lcths',
     name: 'Shave',
     price: 10,
     url: ''
   },
   {
-    id: 'FWtINWPUt5RZA3QVdVhh',
+    uId: 'FWtINWPUt5RZA3QVdVhh',
     name: 'Haircut',
     price: 22,
     url: ''

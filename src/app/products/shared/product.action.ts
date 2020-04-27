@@ -1,7 +1,22 @@
 import {Product} from './product';
 
+// Get Products 1 time and stop listening
 export class GetAllProducts {
   static readonly type = '[Products] GetAllProducts';
+
+  constructor() {}
+}
+
+// Stream Products and keep listening
+export class StartStreamProducts {
+  static readonly type = '[Products] StartStreamProducts';
+
+  constructor() {}
+}
+
+// Stop Stream of Products
+export class StopStreamProducts {
+  static readonly type = '[Products] StopStreamProducts';
 
   constructor() {}
 }

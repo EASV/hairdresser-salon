@@ -36,12 +36,8 @@ export class LoginComponent implements OnInit {
               // unsubscribe myself when I got user.
               sub.unsubscribe();
               // send me to redirect or home
-              const redirect = params[redirectString];
-              if (redirect) {
-                this.store.dispatch(new Navigate([redirect]));
-              } else {
-                this.store.dispatch(new Navigate(['welcome']));
-              }
+              const redirect = params[redirectString] !== undefined ?  params[redirectString] : 'welcome';
+              this.store.dispatch(new Navigate([redirect]));
             }
           })
         ).subscribe();

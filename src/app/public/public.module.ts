@@ -9,6 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {AuthModule} from '../auth/auth.module';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -17,12 +18,13 @@ import {AuthModule} from '../auth/auth.module';
   ],
   imports: [
     CommonModule,
+    NoopAnimationsModule,
+    PublicRoutingModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    PublicRoutingModule,
     AuthModule
   ],
   exports: [

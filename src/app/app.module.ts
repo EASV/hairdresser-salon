@@ -14,6 +14,10 @@ import {AuthState} from './auth/shared/auth.state';
 import {ProductState} from './products/shared/product.state';
 import {FormsModule} from '@angular/forms';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
+import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
+import {stateKeys} from './public/shared/constants';
+import {ProductsRoutingModule} from './products/products-routing.module';
+import {PublicRoutingModule} from './public/public-routing.module';
 
 @NgModule({
   declarations: [
@@ -21,10 +25,9 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
   ],
   imports: [
     BrowserModule,
+    PublicModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    BrowserAnimationsModule,
-    PublicModule,
     NgxsModule.forRoot([
         AuthState,
         ProductState]
@@ -32,6 +35,9 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
     NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot({
+        key: [AuthState]
+    }),
     FormsModule
   ],
   providers: [],

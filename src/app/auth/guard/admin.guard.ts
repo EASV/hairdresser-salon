@@ -6,6 +6,7 @@ import {Select, Store} from '@ngxs/store';
 import {AuthState} from '../shared/auth.state';
 import {AuthUser} from '../shared/auth-user';
 import {Navigate} from '@ngxs/router-plugin';
+import {routingConstants} from '../../public/shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class AdminGuard implements CanActivate {
       .pipe(
         map(authUser => {
           if (authUser === undefined) {
-            this.store.dispatch(new Navigate(['auth/login'],
+            this.store.dispatch(new Navigate([routingConstants.authLogin],
               {redirect: routeState.url}));
             return false;
           }

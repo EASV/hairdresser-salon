@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {from, Observable} from 'rxjs';
 import {Product} from './product';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, DocumentChangeAction} from '@angular/fire/firestore';
 import {map} from 'rxjs/operators';
-import {ProductConstants} from './product.constants';
+import {firestoreConstants, routingConstants} from '../../public/shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ProductService {
   createProduct(product: Product): Observable<Product> {
     return from(
       this.fs
-        .collection(ProductConstants.Products)
+        .collection(firestoreConstants.products)
         .add(product)
     ).pipe(
       map(() => {
@@ -25,7 +25,7 @@ export class ProductService {
   deleteProduct(product: Product): Observable<Product> {
     return from(
       this.fs
-      .doc(ProductConstants.Products + '/' + product.id)
+      .doc(firestoreConstants.products + routingConstants.slash + product.uId)
       .delete()
     ).pipe(
       map(() => {
@@ -35,21 +35,11 @@ export class ProductService {
   }
   getProducts(): Observable<Product[]> {
     return this.fs
-      .collection<Product>(ProductConstants.Products)
+      .collection<Product>(firestoreConstants.products)
       .snapshotChanges()
       .pipe(
-        map(docStuff => {
-            const newArray: Product[] = [];
-            docStuff.forEach(doc => {
-              const prod = doc.payload.doc.data();
-              newArray.push({
-                name: prod.name,
-                price: prod.price,
-                id: doc.payload.doc.id,
-                url: prod.url
-              });
-            });
-            return newArray;
+        map(documentsChangeActions => {
+            return this.mapDocChangeAction(documentsChangeActions);
           }
         )
       );
@@ -57,32 +47,26 @@ export class ProductService {
 
   getTopProducts(limit: number): Observable<Product[]> {
     return this.fs
-      .collection<Product>(ProductConstants.TopProducts,
+      .collection<Product>(firestoreConstants.topProducts,
         ref => ref.limit(limit))
       .snapshotChanges()
       .pipe(
-        map(docStuff => {
-          const newArray: Product[] = [];
-          docStuff.forEach(doc => {
-            const prod = doc.payload.doc.data();
-            newArray.push({
-              name: prod.name,
-              price: prod.price,
-              id: doc.payload.doc.id,
-              url: prod.url
-            });
-          });
-          return newArray;
-          /*products.map(p => {
-            const prod: Product = {
-              name: p.name,
-              price: p.price,
-              id: p.id
-            };
-            return prod;
-          })*/
-          }
-        )
+        map(documentsChangeActions => {
+          return this.mapDocChangeAction(documentsChangeActions);
+        })
       );
+  }
+
+  private mapDocChangeAction(documentsChangeActions: DocumentChangeAction<Product>[]): Product[] {
+    return documentsChangeActions.map(docAction => {
+      const data = docAction.payload.doc.data();
+      const prod: Product = {
+        name: data.name,
+        price: data.price,
+        url: data.url,
+        uId: docAction.payload.doc.id
+      };
+      return prod;
+    });
   }
 }

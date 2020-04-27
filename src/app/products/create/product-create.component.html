@@ -1,0 +1,26 @@
+<div fxLayout="row" class="main-component">
+  <div fxFlex="40" fxLayout="column" fxFlexOffset="30" fxLayoutGap="2em">
+    <div>
+      <form [formGroup]="createForm">
+        <mat-card fxLayout="column wrap" fxLayoutGap="1em">
+          <h1 fxFlexAlign="center">
+            Create new Product
+          </h1>
+          <mat-form-field fxFlexFill>
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="type product name here" formControlName="name" fxFlex="50" >
+          </mat-form-field>
+          <mat-form-field fxFlexFill>
+            <mat-label>Url</mat-label>
+            <input matInput placeholder="Type url for image here" formControlName="url" fxFlex="50">
+          </mat-form-field>
+          <mat-form-field fxFlexFill>
+            <mat-label>Price</mat-label>
+            <input type="number" matInput placeholder="Type price here" formControlName="price" fxFlex="50">
+          </mat-form-field>
+          <button mat-raised-button (click)="submit()">Create</button>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,8 @@ import {DeleteProduct} from '../shared/product.action';
 import {Navigate} from '@ngxs/router-plugin';
 import {routingConstants} from '../../public/shared/constants';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmationDialogComponent} from '../../public/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-products',
@@ -27,12 +29,22 @@ export class ProductsComponent implements OnInit {
   products$: Observable<Product[]>;
   limit = 4;
   cardWidth = 100 / this.limit;
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {}
 
   deleteProduct(product: Product) {
-    this.store.dispatch(new DeleteProduct(product));
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: 'Are you sure you wanna delete this Product?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(new DeleteProduct(product));
+      }
+    });
   }
 
   goToDetails(product: Product) {

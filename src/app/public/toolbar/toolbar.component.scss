@@ -1,3 +1,11 @@
+@import "src/theme";
 .bar-spacer {
   flex: 1 1 auto;
+}
+.error-dialog {
+  color: $warn !important;
+  background-color: blue !important;
+  .mat-simple-snackbar-action {
+    color: $warn !important;
+  }
 }

@@ -1,11 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {PublicModule} from './public/public.module';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
@@ -15,9 +13,7 @@ import {ProductState} from './products/shared/product.state';
 import {FormsModule} from '@angular/forms';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
-import {stateKeys} from './public/shared/constants';
-import {ProductsRoutingModule} from './products/products-routing.module';
-import {PublicRoutingModule} from './public/public-routing.module';
+import {ErrorState} from './error/shared/error.state';
 
 @NgModule({
   declarations: [
@@ -29,6 +25,7 @@ import {PublicRoutingModule} from './public/public-routing.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     NgxsModule.forRoot([
+        ErrorState,
         AuthState,
         ProductState]
       , {developmentMode: !environment.production}),
@@ -40,7 +37,6 @@ import {PublicRoutingModule} from './public/public-routing.module';
     }),
     FormsModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

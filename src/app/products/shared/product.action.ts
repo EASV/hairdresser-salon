@@ -30,5 +30,5 @@ export class DeleteProduct {
 export class CreateProduct {
   static readonly type = '[Products] CreateProduct';
 
-  constructor(public product: Product) {}
+  constructor(public product: Product, public goToOverview?: boolean) {}
 }

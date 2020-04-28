@@ -22,19 +22,44 @@
         <div>
           <form [formGroup]="createForm">
             <mat-card fxLayout="column wrap" fxLayoutGap="1em">
-              <mat-form-field fxFlexFill>
-                <mat-label>Name</mat-label>
-                <input matInput placeholder="type product name here" formControlName="name" fxFlex="100" >
-              </mat-form-field>
-              <mat-form-field fxFlexFill>
-                <mat-label>Url</mat-label>
-                <input matInput placeholder="Type url for image here" formControlName="url" fxFlex="100">
-              </mat-form-field>
-              <mat-form-field fxFlexFill>
-                <mat-label>Price</mat-label>
-                <input type="number" matInput placeholder="Type price here" formControlName="price" fxFlex="100">
-              </mat-form-field>
-              <button mat-raised-button (click)="submit()">Create</button>
+              <mat-card-content>
+                <mat-form-field fxFlexFill>
+                  <mat-label>Name</mat-label>
+                  <input matInput placeholder="type product name here" formControlName="name" fxFlex="100" >
+                  <mat-hint>Pick a Good name of 3 or more characters</mat-hint>
+                  <mat-error *ngIf="
+                    name.hasError('minLength') ||
+                    name.hasError('required')">
+                    Name must be 3 or more Characters
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlexFill>
+                  <mat-label>Url</mat-label>
+                  <input matInput placeholder="Type url for image here" formControlName="url" fxFlex="100">
+                  <mat-hint>Please remember, the URL for the image must start with "https://"</mat-hint>
+                  <mat-error *ngIf="
+                    url.hasError('minLength') ||
+                    url.hasError('required') ||
+                    url.hasError('pattern')">
+                    Url must be a valid url (starts with https://) with 12 or more Characters
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlexFill>
+                  <mat-label>Price</mat-label>
+                  <input type="number" matInput placeholder="Type price here" formControlName="price" fxFlex="100">
+                  <mat-hint>The price should be higher the 0, we have to make some money</mat-hint>
+                  <mat-error *ngIf="
+                    url.hasError('min') ||
+                    url.hasError('required')">
+                    Price must be a number above 0
+                  </mat-error>
+                </mat-form-field>
+              </mat-card-content>
+              <mat-card-actions fxLayoutAlign="end">
+                <mat-checkbox color="warn" [checked]="stay" (change)="GoToOverviewChanged()" >Go To Overview on save</mat-checkbox>
+                <button [disabled]='!createForm.valid' mat-raised-button (click)="submit()">Create</button>
+              </mat-card-actions>
             </mat-card>
           </form>
         </div>

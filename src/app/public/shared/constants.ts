@@ -16,5 +16,6 @@ export const routingConstants = {
 };
 
 export const stateKeys = {
-  products: 'products'
+  products: 'products',
+  public: 'public'
 };

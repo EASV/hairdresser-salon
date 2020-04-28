@@ -9,23 +9,31 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {AuthModule} from '../auth/auth.module';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {ErrorModule} from '../error/error.module';
 
 @NgModule({
   declarations: [
     ToolbarComponent,
-    SidenavComponent
+    SidenavComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
     NoopAnimationsModule,
     PublicRoutingModule,
+    MatDialogModule,
     MatToolbarModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     MatListModule,
-    AuthModule
+    MatSnackBarModule,
+    AuthModule,
+    ErrorModule
   ],
   exports: [
     ToolbarComponent,

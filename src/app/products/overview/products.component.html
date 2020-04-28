@@ -34,6 +34,13 @@
               <h3 mat-subheader>Price: {{product.price}},- DKK</h3>
             </mat-list>
           </mat-card-content>
+          <mat-card-actions fxLayoutAlign="end">
+            <button mat-mini-fab
+                    color="warn"
+                    (click)="deleteProduct(product)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
         </mat-card>
       </div>
     </div>

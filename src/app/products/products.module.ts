@@ -14,14 +14,18 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ProductDetailsComponent } from './details/product-details.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
-  declarations: [ProductsComponent, ProductCreateComponent],
+  declarations: [ProductsComponent, ProductCreateComponent, ProductDetailsComponent],
   imports: [
     CommonModule,
     ProductsRoutingModule,
     FormsModule,
+    MatDialogModule,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
@@ -31,7 +35,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatListModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatCheckboxModule
   ]
 })
 export class ProductsModule { }

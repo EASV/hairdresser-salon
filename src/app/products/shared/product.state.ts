@@ -7,6 +7,7 @@ import {CreateProduct, DeleteProduct, GetAllProducts, StartStreamProducts, StopS
 import {Subject} from 'rxjs';
 import {Navigate, RouterDataResolved} from '@ngxs/router-plugin';
 import {routingConstants, stateKeys} from '../../public/shared/constants';
+import {ErrorOccoured} from '../../error/shared/error.action';
 
 export class ProductStateModel {
   products: Product[];
@@ -35,13 +36,19 @@ export class ProductState implements NgxsOnInit {
 
   @Action(CreateProduct)
   createProduct({getState, setState, dispatch}: StateContext<ProductStateModel>, action: CreateProduct) {
-    return this.productService
-      .createProduct(action.product)
-      .pipe(
-        tap(product => {
-          dispatch(new Navigate([routingConstants.products]));
-        })
-      );
+    try {
+      this.productService
+        .createProduct(action.product)
+        .pipe(
+          tap(product => {
+            if (action.goToOverview) {
+              dispatch(new Navigate([routingConstants.products]));
+            }
+          })
+        );
+    } catch (e) {
+      dispatch(new ErrorOccoured(e));
+    }
   }
 
   @Action(GetAllProducts)

@@ -11,6 +11,12 @@ export class Logout {
   constructor() {}
 }
 
+export class GetRole {
+  static readonly type = '[Auth] GetRole';
+
+  constructor(public uid: string) {}
+}
+
 /*export class LoginInWithEmail {
   static readonly type = '[Auth] LoginInWithEmail';
 

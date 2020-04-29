@@ -1,7 +1,7 @@
 import {AuthUser} from './auth-user';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {AuthService} from './auth.service';
-import {LoginWithGoogle, Logout} from './auth.action';
+import {GetRole, LoginWithGoogle, Logout} from './auth.action';
 import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Navigate} from '@ngxs/router-plugin';
@@ -10,13 +10,15 @@ import {routingConstants} from '../../public/shared/constants';
 export class AuthStateModel {
   loggedInUser: AuthUser;
   userName: string;
+  role: string;
 }
 
 @State<AuthStateModel>({
   name: 'auth',
   defaults: {
     loggedInUser: undefined,
-    userName: undefined
+    userName: undefined,
+    role: undefined
   }
 })
 @Injectable()
@@ -27,6 +29,11 @@ export class AuthState {
   @Selector()
   static loggedInUser(state: AuthStateModel) {
     return state.loggedInUser;
+  }
+
+  @Selector()
+  static role(state: AuthStateModel) {
+    return state.role;
   }
 
   @Selector()
@@ -45,6 +52,7 @@ export class AuthState {
             loggedInUser: result,
             userName: result.displayName
           });
+          ctx.dispatch(new GetRole(result.uid));
         })
       );
   }
@@ -61,6 +69,27 @@ export class AuthState {
             userName: undefined
           });
           dispatch(new Navigate([routingConstants.welcome]));
+        })
+      );
+  }
+
+  @Action(GetRole)
+  getRole(ctx: StateContext<AuthStateModel>, action: GetRole) {
+    const state = ctx.getState();
+    return this.authService
+      .getRole(action.uid).pipe(
+        tap((roleFound) => {
+          /*const oldAuthUser = state.loggedInUser;
+          const authUserNew: AuthUser = {
+            role: roleFound,
+            uid: oldAuthUser.uid,
+            displayName: oldAuthUser.displayName,
+            email: oldAuthUser.email
+          };*/
+          ctx.setState({
+            ...state,
+            role: roleFound
+          });
         })
       );
   }

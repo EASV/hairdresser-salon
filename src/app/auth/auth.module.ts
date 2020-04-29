@@ -12,6 +12,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 
 @NgModule({
@@ -20,6 +22,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     CommonModule,
     AuthRoutingModule,
     AngularFireAuthModule,
+    AngularFirestoreModule,
     MatButtonModule,
     MatIconModule,
     MatCardModule,

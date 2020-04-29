@@ -1,5 +1,8 @@
 export const firestoreConstants = {
   // Firestore
+  slash: '/',
+  roles: 'roles',
+  admin: 'admin',
   products: 'products',
   topProducts: 'top-products'
 };

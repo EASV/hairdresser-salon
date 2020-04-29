@@ -1,0 +1,21 @@
+<div fxLayout="column"
+     fxLayoutGap="2em">
+  <div [fxFlexOrder]="1">
+    <mat-card>
+      <mat-card-content>
+        <span fxLayoutAlign="center"><mat-icon style="font-size: 3em" color="warn" >error</mat-icon></span>
+        <h1>We are Sorry, but the following error occurred</h1>
+        <h3>{{error.message}}</h3>
+        <h3>Please try again or contact <a href="mailto:support@support.dk">support@support.dk</a></h3>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="end">
+        <button mat-raised-button (click)="close()">Ok</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+</div>
+
+
+
+

@@ -10,6 +10,8 @@ import {ErrorState} from '../../error/shared/error.state';
 import {TimedError} from '../../error/shared/timed-error';
 import {first} from 'rxjs/operators';
 import {ErrorRegisteredByUser} from '../../error/shared/error.action';
+import {ErrorComponent} from '../../error/dialog/error.component';
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-innotech-toolbar',
@@ -26,21 +28,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   toggleClicked = new EventEmitter();
   constructor(private store: Store,
               private router: Router,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              private bottomSheet: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.errorSubscription = this.errors$
       .subscribe(errors => {
         if (errors && errors.length > 0) {
           const nextError = errors[0];
-          this.snackBar.open(
-            nextError.message,
-            'Ok',
-            {
-              verticalPosition: 'top',
-              politeness: 'polite',
-              panelClass: ['style-error']}
-            ).afterDismissed().pipe(first())
+          this.bottomSheet.open(ErrorComponent, {data: {error: nextError}})
+            .afterDismissed().pipe(first())
             .subscribe(() => this.store.dispatch(new ErrorRegisteredByUser(nextError)));
         }
       });

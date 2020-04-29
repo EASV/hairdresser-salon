@@ -14,6 +14,7 @@ import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confir
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ErrorModule} from '../error/error.module';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {ErrorModule} from '../error/error.module';
     MatButtonModule,
     MatListModule,
     MatSnackBarModule,
+    MatBottomSheetModule,
     AuthModule,
     ErrorModule
   ],

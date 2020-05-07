@@ -37,6 +37,7 @@
                 <mat-form-field fxFlexFill>
                   <mat-label>Url</mat-label>
                   <input matInput placeholder="Type url for image here" formControlName="url" fxFlex="100">
+
                   <mat-hint>Please remember, the URL for the image must start with "https://"</mat-hint>
                   <mat-error *ngIf="
                     url.hasError('minLength') ||
@@ -44,6 +45,10 @@
                     url.hasError('pattern')">
                     Url must be a valid url (starts with https://) with 12 or more Characters
                   </mat-error>
+                  <input #fileInput accept="image/*" style="display:none;" type="file" (change)="newImageSelected($event)">
+                  <button mat-mini-fab type="button" (click)="fileInput.click()">
+                    <mat-icon>folder</mat-icon>
+                  </button>
                 </mat-form-field>
                 <mat-form-field fxFlexFill>
                   <mat-label>Price</mat-label>

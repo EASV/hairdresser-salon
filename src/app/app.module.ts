@@ -14,6 +14,9 @@ import {FormsModule} from '@angular/forms';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {ErrorState} from './error/shared/error.state';
+import {AngularFireStorage, AngularFireStorageModule} from '@angular/fire/storage';
+import {UploadState} from './file/shared/upload.state';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -24,10 +27,12 @@ import {ErrorState} from './error/shared/error.state';
     PublicModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireStorageModule,
     NgxsModule.forRoot([
         ErrorState,
         AuthState,
-        ProductState]
+        ProductState,
+        UploadState]
       , {developmentMode: !environment.production}),
     NgxsRouterPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),

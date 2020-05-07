@@ -1,5 +1,5 @@
 import {Action, Actions, NgxsOnInit, ofActionSuccessful, Selector, State, StateContext, Store} from '@ngxs/store';
-import {first, takeUntil, tap} from 'rxjs/operators';
+import {catchError, first, takeUntil, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Product} from './product';
 import {ProductService} from './product.service';
@@ -35,24 +35,23 @@ export class ProductState implements NgxsOnInit {
   }
 
   @Action(CreateProduct)
-  createProduct({getState, setState, dispatch}: StateContext<ProductStateModel>, action: CreateProduct) {
-    try {
-      this.productService
-        .createProduct(action.product)
-        .pipe(
-          tap(product => {
-            if (action.goToOverview) {
-              dispatch(new Navigate([routingConstants.products]));
-            }
-          })
-        );
-    } catch (e) {
-      dispatch(new ErrorOccoured(e));
-    }
+  createProduct({getState, dispatch}: StateContext<ProductStateModel>, action: CreateProduct) {
+    return this.productService
+      .createProduct(action.product)
+      .pipe(
+        tap(product => {
+          if (action.goToOverview) {
+            dispatch(new Navigate([routingConstants.products]));
+          }
+        }),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        })
+      );
   }
 
   @Action(GetAllProducts)
-  getAllProducts({getState, setState}: StateContext<ProductStateModel>) {
+  getAllProducts({getState, setState, dispatch}: StateContext<ProductStateModel>) {
     const state = getState();
     return this.productService
       .getProducts().pipe(
@@ -62,11 +61,15 @@ export class ProductState implements NgxsOnInit {
             ...state,
             products: allProducts
           });
+        }),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
         })
       );
   }
+
   @Action(StartStreamProducts)
-  streamProducts({getState, setState}: StateContext<ProductStateModel>) {
+  streamProducts({getState, setState, dispatch}: StateContext<ProductStateModel>) {
     this.stopSteamProducts$ = new Subject<void>();
     const state = getState();
     return this.productService
@@ -77,9 +80,13 @@ export class ProductState implements NgxsOnInit {
             products: allProducts
           });
         }),
-        takeUntil(this.stopSteamProducts$)
+        takeUntil(this.stopSteamProducts$),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        })
       );
   }
+
   @Action(StopStreamProducts)
   stopStreamProducts() {
     if (this.stopSteamProducts$ != null) {
@@ -92,7 +99,11 @@ export class ProductState implements NgxsOnInit {
   @Action(DeleteProduct)
   deleteProduct({getState, setState, dispatch}: StateContext<ProductStateModel>, action: DeleteProduct) {
     return this.productService
-      .deleteProduct(action.product);
+      .deleteProduct(action.product).pipe(
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        })
+      );
   }
 
   ngxsOnInit(ctx?: StateContext<any>): void | any {

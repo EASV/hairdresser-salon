@@ -17,12 +17,14 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ProductDetailsComponent } from './details/product-details.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FileModule} from '../file/file.module';
 
 
 @NgModule({
   declarations: [ProductsComponent, ProductCreateComponent, ProductDetailsComponent],
   imports: [
     CommonModule,
+    FileModule,
     ProductsRoutingModule,
     FormsModule,
     MatDialogModule,

@@ -7,6 +7,11 @@ export const firestoreConstants = {
   topProducts: 'top-products'
 };
 
+export const firestorageConstants = {
+  // Firestore
+  images: 'images'
+};
+
 export const routingConstants = {
   // Navigation
   slash: '/',
@@ -20,5 +25,7 @@ export const routingConstants = {
 
 export const stateKeys = {
   products: 'products',
-  public: 'public'
+  public: 'public',
+  files: 'files',
+  upload: 'upload'
 };

@@ -11,6 +11,9 @@ import {firestoreConstants, routingConstants} from '../../public/shared/constant
 export class ProductService {
 
   constructor(private fs: AngularFirestore) { }
+  getUniqueProductId(): string {
+    return this.fs.createId();
+  }
   createProduct(product: Product): Observable<Product> {
     return from(
       this.fs

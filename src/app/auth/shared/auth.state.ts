@@ -6,11 +6,12 @@ import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Navigate} from '@ngxs/router-plugin';
 import {routingConstants} from '../../public/shared/constants';
+import {Role} from './role';
 
 export class AuthStateModel {
   loggedInUser: AuthUser;
   userName: string;
-  role: string;
+  role: Role;
 }
 
 @State<AuthStateModel>({
@@ -79,13 +80,6 @@ export class AuthState {
     return this.authService
       .getRole(action.uid).pipe(
         tap((roleFound) => {
-          /*const oldAuthUser = state.loggedInUser;
-          const authUserNew: AuthUser = {
-            role: roleFound,
-            uid: oldAuthUser.uid,
-            displayName: oldAuthUser.displayName,
-            email: oldAuthUser.email
-          };*/
           ctx.setState({
             ...state,
             role: roleFound

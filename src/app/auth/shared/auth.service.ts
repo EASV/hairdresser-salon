@@ -4,8 +4,9 @@ import {auth, User} from 'firebase/app';
 import {AuthUser} from './auth-user';
 import {from, Observable} from 'rxjs';
 import {first, map} from 'rxjs/operators';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, Query} from '@angular/fire/firestore';
 import {firestoreConstants} from '../../public/shared/constants';
+import {Role} from './role';
 
 @Injectable({
   providedIn: 'root'
@@ -33,19 +34,10 @@ export class AuthService {
     return authUser$;
   }
 
-  getRole(uid: string): Observable<string> {
-    return this.fs.doc(
-      firestoreConstants.roles +
-      firestoreConstants.slash +
-      firestoreConstants.admin +
-      firestoreConstants.slash + uid)
-      .get().pipe(
-        first(),
-        map(value => {
-          const data = value.data();
-          return data.role;
-        })
-      );
+  getRole(uid: string): Observable<Role> {
+    return this.fs
+      .doc<Role>(firestoreConstants.roles + firestoreConstants.slash + uid)
+      .valueChanges().pipe(first());
   }
 
   private firebaseUserToAuthUser(user: User): AuthUser {

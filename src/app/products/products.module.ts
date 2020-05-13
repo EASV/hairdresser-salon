@@ -18,6 +18,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ProductDetailsComponent } from './details/product-details.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FileModule} from '../file/file.module';
+import {MatProgressBar, MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {FileModule} from '../file/file.module';
     MatInputModule,
     MatSnackBarModule,
     MatListModule,
+    MatProgressBarModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatToolbarModule,

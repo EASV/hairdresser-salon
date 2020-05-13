@@ -50,4 +50,16 @@ export class FileService {
     });
     return upload;
   }
+
+  deleteFile(uid: string): Observable<any> {
+    if (uid) {
+      const path = firestorageConstants.images + firestoreConstants.slash + uid;
+      return this.afst.ref(path)
+        .delete();
+    }
+  }
+
+  cancelUpload(behavior: UploadBehaviour) {
+    behavior.cancelUpload.next();
+  }
 }

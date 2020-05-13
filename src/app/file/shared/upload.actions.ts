@@ -24,8 +24,14 @@ export class UploadPercentChanged {
   constructor(public upload: UploadData) {}
 }
 
-export class GetFilePath {
-  static readonly type = '[File] GetFilePath';
+export class DeleteFile {
+  static readonly type = '[File] DeleteFile';
+
+  constructor(public uid: string) {}
+}
+
+export class CancelUpload {
+  static readonly type = '[File] CancelUpload';
 
   constructor(public uid: string) {}
 }

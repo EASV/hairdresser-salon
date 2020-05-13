@@ -63,7 +63,7 @@ export class UploadState {
         dispatch(new ErrorOccoured(error));
       });
     const state = getState();
-    const updatedBehaviors = state.uploadBehaviors;
+    const updatedBehaviors = [...state.uploadBehaviors];
     updatedBehaviors.push(upload);
     // set new State
     setState({

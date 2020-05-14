@@ -22,7 +22,6 @@ import {ProductState} from '../../products/shared/product.state';
   ]
 })
 export class WelcomeComponent implements OnInit {
-  defaultImage = 'https://www.placecage.com/1000/1000';
   topProducts$: Observable<Product[]>;
   limit = 4;
   cardWidth = 100 / this.limit;

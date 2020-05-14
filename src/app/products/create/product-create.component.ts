@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Select, Store} from '@ngxs/store';
+import {Store} from '@ngxs/store';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CreateProduct} from '../shared/product.action';
 import {Product} from '../shared/product';
@@ -8,10 +8,9 @@ import {routingConstants} from '../../public/shared/constants';
 import {UploadCompleteRegistered, UploadFile} from '../../file/shared/upload.actions';
 import {ProductService} from '../shared/product.service';
 import {Observable, Subscription} from 'rxjs';
-import {UploadState, UploadStateModel} from '../../file/shared/upload.state';
-import {UploadBehaviour} from '../../file/shared/upload-behaviour';
+import {UploadState} from '../../file/shared/upload.state';
 import {UploadData} from '../../file/shared/upload-data';
-import {finalize} from 'rxjs/operators';
+import {first, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-innotech-product-create',
@@ -79,7 +78,6 @@ export class ProductCreateComponent implements OnInit, OnDestroy {
   newImageSelected(event) {
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
-      this.uploadInProgress$ = this.store.select(UploadState.uploadsInProgressById(this.uid));
       const file: File = fileList[0];
       this.store.dispatch(new UploadFile(this.uid, file));
     }

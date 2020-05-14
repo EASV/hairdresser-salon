@@ -12,6 +12,9 @@ import {first} from 'rxjs/operators';
 import {ErrorRegisteredByUser} from '../../error/shared/error.action';
 import {ErrorComponent} from '../../error/dialog/error.component';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import {UploadState} from '../../file/shared/upload.state';
+import {UploadData} from '../../file/shared/upload-data';
+import {UploadStatusComponent} from '../../file/upload-status/upload-status.component';
 
 @Component({
   selector: 'app-innotech-toolbar',
@@ -20,8 +23,11 @@ import {MatBottomSheet} from '@angular/material/bottom-sheet';
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
   private errorSubscription: Subscription;
+  private uploadSubscription: Subscription;
   @Select(ErrorState.errors)
   errors$: Observable<TimedError[]>;
+  @Select(UploadState.uploadsInProgress)
+  uploadsInProgress: Observable<UploadData[]>;
   @Select(AuthState.loggedInUser)
   authUser$: Observable<AuthUser>;
   @Output()
@@ -41,11 +47,20 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             .subscribe(() => this.store.dispatch(new ErrorRegisteredByUser(nextError)));
         }
       });
+    this.uploadSubscription = this.uploadsInProgress
+      .subscribe(uploadsInProgress => {
+        if (uploadsInProgress && uploadsInProgress.length > 0) {
+          this.bottomSheet.open(UploadStatusComponent);
+        }
+      });
   }
 
   ngOnDestroy(): void {
     if (this.errorSubscription) {
       this.errorSubscription.unsubscribe();
+    }
+    if (this.uploadSubscription) {
+      this.uploadSubscription.unsubscribe();
     }
   }
 

@@ -13,6 +13,7 @@ import {UploadBehaviour} from './upload-behaviour';
 })
 export class FileService {
 
+  uploadBehaviors: UploadBehaviour[] = [];
   constructor(private afst: AngularFireStorage) {}
 
   upload(uid: string, file: File): UploadBehaviour {
@@ -48,6 +49,9 @@ export class FileService {
         task.cancel();
       }
     });
+    // If we wanna cancel or pause/resume later
+    this.uploadBehaviors.push(upload);
+
     return upload;
   }
 
@@ -59,7 +63,11 @@ export class FileService {
     }
   }
 
-  cancelUpload(behavior: UploadBehaviour) {
-    behavior.cancelUpload.next();
+  cancelUpload(uid: string) {
+    const behavior = [...this.uploadBehaviors.filter(upload => upload.uid === uid)];
+    if (behavior.length > 0) {
+      behavior[0].cancelUpload.next();
+      behavior[0].cancelUpload.complete();
+    }
   }
 }

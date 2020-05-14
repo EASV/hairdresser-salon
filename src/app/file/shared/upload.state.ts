@@ -1,15 +1,13 @@
 import {Action, createSelector, Selector, State, StateContext} from '@ngxs/store';
-import {catchError, first, retry, tap} from 'rxjs/operators';
+import {first, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {ErrorOccoured} from '../../error/shared/error.action';
 import {FileService} from './file.service';
 import {CancelUpload, DeleteFile, UploadComplete, UploadCompleteRegistered, UploadFile, UploadPercentChanged} from './upload.actions';
-import {UploadBehaviour} from './upload-behaviour';
-import UpdateData = firebase.firestore.UpdateData;
 import {UploadData} from './upload-data';
+import {ProductStateModel} from '../../products/shared/product.state';
 
 export class UploadStateModel {
-  uploadBehaviors: UploadBehaviour[];
   uploadsInProgress: UploadData[];
   uploadsComplete: UploadData[];
 }
@@ -17,7 +15,6 @@ export class UploadStateModel {
 @State<UploadStateModel>({
   name: 'upload',
   defaults: {
-    uploadBehaviors: [],
     uploadsInProgress: [],
     uploadsComplete: []
   }
@@ -33,6 +30,11 @@ export class UploadState {
     });
   }
 
+  @Selector()
+  static uploadsInProgress(state: UploadStateModel) {
+    return state.uploadsInProgress;
+  }
+
   static uploadsCompleteById(id: string) {
     return createSelector([UploadState], (state: UploadStateModel) => {
       const found = state.uploadsComplete.filter(u => u.uid === id);
@@ -42,6 +44,12 @@ export class UploadState {
 
   @Action(UploadFile)
   uploadFile({getState, setState, dispatch}: StateContext<UploadStateModel>, action: UploadFile) {
+    const state = getState();
+    // Not done uploading last file with same id,then cancel upload
+    const uploadInProgressForFile = [...state.uploadsInProgress.filter(uploadInProgress => uploadInProgress.uid === action.uid)];
+    if (uploadInProgressForFile.length > 0) {
+      dispatch(new CancelUpload(action.uid));
+    }
     // New Upload startet
     const upload = this.fileService
       .upload(action.uid, action.file);
@@ -62,14 +70,6 @@ export class UploadState {
       }, error => {
         dispatch(new ErrorOccoured(error));
       });
-    const state = getState();
-    const updatedBehaviors = [...state.uploadBehaviors];
-    updatedBehaviors.push(upload);
-    // set new State
-    setState({
-      ...state,
-      uploadBehaviors: updatedBehaviors
-    });
     return;
   }
 
@@ -90,7 +90,7 @@ export class UploadState {
   }
 
   @Action(UploadComplete)
-  uploadComplete({getState, setState}: StateContext<UploadStateModel>, action: UploadComplete) {
+  uploadComplete({getState, setState, dispatch}: StateContext<UploadStateModel>, action: UploadComplete) {
     const state = getState();
     // Remove from upload in Progress
     const uploadsInProgressMinusCompleted = [...state.uploadsInProgress.filter(upload => upload.uid !== action.upload.uid)];
@@ -125,26 +125,19 @@ export class UploadState {
 
   @Action(CancelUpload)
   cancelUpload(ctx: StateContext<UploadStateModel>, action: CancelUpload) {
-    const state = ctx.getState();
-    const behavior = [...state.uploadBehaviors.filter(upload => upload.uid === action.uid)];
-    if (behavior.length > 0) {
-      behavior[0].cancelUpload.next();
-      behavior[0].cancelUpload.complete();
-      this.removeUploadFromState(ctx, action.uid);
-    }
+    this.fileService.cancelUpload(action.uid);
+    this.removeUploadFromState(ctx, action.uid);
     return;
   }
 
-  removeUploadFromState(ctx: StateContext<UploadStateModel>, uid: string) {
+  private removeUploadFromState(ctx: StateContext<UploadStateModel>, uid: string) {
     const state = ctx.getState();
     // Remove from upload in Progress
-    const removeBehavior = [...state.uploadBehaviors.filter(upload => upload.uid !== uid)];
     const uploadToChangeListInProgress = [...state.uploadsInProgress.filter(upload => upload.uid !== uid)];
     const uploadToChangeListComplete = [...state.uploadsComplete.filter(upload => upload.uid !== uid)];
     // set new State
     ctx.setState({
       ...state,
-      uploadBehaviors: removeBehavior,
       uploadsInProgress: uploadToChangeListInProgress,
       uploadsComplete: uploadToChangeListComplete
     });

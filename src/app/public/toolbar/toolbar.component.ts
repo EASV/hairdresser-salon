@@ -50,7 +50,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.uploadSubscription = this.uploadsInProgress
       .subscribe(uploadsInProgress => {
         if (uploadsInProgress && uploadsInProgress.length > 0) {
-          this.bottomSheet.open(UploadStatusComponent);
+          this.bottomSheet.open(UploadStatusComponent, {hasBackdrop: false, disableClose: true});
         }
       });
   }

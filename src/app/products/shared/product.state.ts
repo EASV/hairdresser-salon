@@ -3,7 +3,7 @@ import {catchError, first, takeUntil, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Product} from './product';
 import {ProductService} from './product.service';
-import {CreateProduct, DeleteProduct, GetAllProducts, StartStreamProducts, StopStreamProducts} from './product.action';
+import {CreateProduct, DeleteProduct, GetAllProducts, GetProductById, StartStreamProducts, StopStreamProducts} from './product.action';
 import {Subject} from 'rxjs';
 import {Navigate, RouterDataResolved} from '@ngxs/router-plugin';
 import {routingConstants, stateKeys} from '../../public/shared/constants';
@@ -11,18 +11,21 @@ import {ErrorOccoured} from '../../error/shared/error.action';
 
 export class ProductStateModel {
   products: Product[];
+  productDetail: Product;
 }
 
 @State<ProductStateModel>({
   name: stateKeys.products,
   defaults: {
-    products: []
+    products: [],
+    productDetail: undefined
   }
 })
 @Injectable()
 export class ProductState implements NgxsOnInit {
   private stopSteamProducts$: Subject<any>;
-  urlsForProductStream = [routingConstants.slash + routingConstants.products,
+  urlsForProductStream = [
+    routingConstants.slash + routingConstants.products,
     routingConstants.slash + routingConstants.products + routingConstants.slash + routingConstants.create
   ];
   constructor(private productService: ProductService,
@@ -34,6 +37,11 @@ export class ProductState implements NgxsOnInit {
     return state.products;
   }
 
+  @Selector()
+  static productDetail(state: ProductStateModel) {
+    return state.productDetail;
+  }
+
   @Action(CreateProduct)
   createProduct({getState, dispatch}: StateContext<ProductStateModel>, action: CreateProduct) {
     return this.productService
@@ -43,6 +51,32 @@ export class ProductState implements NgxsOnInit {
           if (action.goToOverview) {
             dispatch(new Navigate([routingConstants.products]));
           }
+        }),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        })
+      );
+  }
+
+  @Action(GetProductById)
+  getProductById({getState, setState, dispatch}: StateContext<ProductStateModel>, action: GetProductById ) {
+    const state = getState();
+    // Get local representation for instant access
+    const productDetail = state.products.find(prod => prod.uId === action.uid)
+    if (productDetail) {
+      setState({
+        ...state,
+        productDetail
+      });
+    }
+    return this.productService
+      .getProductById(action.uid).pipe(
+        first(),
+        tap(product => {
+          setState({
+            ...state,
+            productDetail: product
+          });
         }),
         catchError(error => {
           return dispatch(new ErrorOccoured(error));

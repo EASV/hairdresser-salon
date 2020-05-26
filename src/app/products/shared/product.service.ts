@@ -42,7 +42,22 @@ export class ProductService {
       .snapshotChanges()
       .pipe(
         map(documentsChangeActions => {
-            return this.mapDocChangeAction(documentsChangeActions);
+            return this.mapDocChangeActions(documentsChangeActions);
+          }
+        )
+      );
+  }
+
+  getProductById(uid: string): Observable<Product> {
+    return this.fs
+      .collection<Product>(firestoreConstants.products)
+      .doc(uid)
+      .get()
+      .pipe(
+        map(docAction => {
+          return this.createProductFromDoc(
+            docAction.data() as Product,
+            docAction.id);
           }
         )
       );
@@ -55,21 +70,28 @@ export class ProductService {
       .snapshotChanges()
       .pipe(
         map(documentsChangeActions => {
-          return this.mapDocChangeAction(documentsChangeActions);
+          return this.mapDocChangeActions(documentsChangeActions);
         })
       );
   }
 
-  private mapDocChangeAction(documentsChangeActions: DocumentChangeAction<Product>[]): Product[] {
+  private mapDocChangeActions(documentsChangeActions: DocumentChangeAction<Product>[]): Product[] {
     return documentsChangeActions.map(docAction => {
-      const data = docAction.payload.doc.data();
-      const prod: Product = {
-        name: data.name,
-        price: data.price,
-        url: data.url,
-        uId: docAction.payload.doc.id
-      };
-      return prod;
+      return this.createProductFromDoc(
+        docAction.payload.doc.data(),
+        docAction.payload.doc.id);
     });
   }
+
+
+  private createProductFromDoc(data: Product, id: string): Product {
+    const prod: Product = {
+      name: data.name,
+      price: data.price,
+      url: data.url,
+      uId: id
+    };
+    return prod;
+  }
+
 }

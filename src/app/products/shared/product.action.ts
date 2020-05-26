@@ -32,3 +32,9 @@ export class CreateProduct {
 
   constructor(public product: Product, public goToOverview?: boolean) {}
 }
+
+export class GetProductById {
+  static readonly type = '[Products] GetProductById';
+
+  constructor(public uid: string) {}
+}

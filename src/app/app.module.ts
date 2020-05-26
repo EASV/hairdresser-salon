@@ -16,6 +16,7 @@ import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {ErrorState} from './error/shared/error.state';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {UploadState} from './file/shared/upload.state';
+import {CartState} from './public/shared/cart.state';
 
 @NgModule({
   declarations: [

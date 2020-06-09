@@ -1,6 +1,6 @@
 export interface UploadData {
   uid: string;
   percentage: number;
-  file: File;
+  data: File | string;
   url?: string;
 }

@@ -8,16 +8,25 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ImageAreaComponent } from './image-area/image-area.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {ImageCropperModule} from 'ngx-image-cropper';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [UploadStatusComponent],
+  declarations: [UploadStatusComponent, ImageAreaComponent],
+  exports: [
+    ImageAreaComponent
+  ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    ImageCropperModule,
+    MatProgressSpinnerModule
   ]
 })
 export class FileModule { }

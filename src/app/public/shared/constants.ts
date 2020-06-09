@@ -20,7 +20,8 @@ export const routingConstants = {
   login: 'login',
   auth: 'auth',
   products: 'products',
-  create: 'create'
+  create: 'create',
+  edit: 'edit'
 };
 
 export const stateKeys = {
@@ -29,3 +30,7 @@ export const stateKeys = {
   files: 'files',
   upload: 'upload'
 };
+
+export function joinPath(...parts: string[]): string {
+  return parts.join('/');
+}

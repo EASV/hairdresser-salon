@@ -5,7 +5,6 @@ import {ErrorOccoured} from '../../error/shared/error.action';
 import {FileService} from './file.service';
 import {CancelUpload, DeleteFile, UploadComplete, UploadCompleteRegistered, UploadFile, UploadPercentChanged} from './upload.actions';
 import {UploadData} from './upload-data';
-import {ProductStateModel} from '../../products/shared/product.state';
 
 export class UploadStateModel {
   uploadsInProgress: UploadData[];
@@ -44,15 +43,9 @@ export class UploadState {
 
   @Action(UploadFile)
   uploadFile({getState, setState, dispatch}: StateContext<UploadStateModel>, action: UploadFile) {
-    const state = getState();
-    // Not done uploading last file with same id,then cancel upload
-    const uploadInProgressForFile = [...state.uploadsInProgress.filter(uploadInProgress => uploadInProgress.uid === action.uid)];
-    if (uploadInProgressForFile.length > 0) {
-      dispatch(new CancelUpload(action.uid));
-    }
     // New Upload startet
     const upload = this.fileService
-      .upload(action.uid, action.file);
+      .upload(action.uid, action.data);
     // Listen for when the upload percentage changes
     upload.percentageChanged
       .subscribe(uploadData => {
@@ -70,7 +63,7 @@ export class UploadState {
       }, error => {
         dispatch(new ErrorOccoured(error));
       });
-    return;
+    return upload;
   }
 
   @Action(UploadPercentChanged)

@@ -1,1 +1,36 @@
-<p>product-details works!</p>
+<div class="main-component"
+     fxLayout="column"
+     fxLayoutGap="2em"
+     *ngIf="productDetails$ | async as product" >
+  <app-innotech-product-navbar [title]="'Details: ' + product.name"></app-innotech-product-navbar>
+  <div [fxFlexOrder]="2">
+    <div fxLayout="row" >
+      <div fxFlex="30" fxLayout="column" fxFlexOffset="35" fxLayoutGap="2em">
+        <mat-card>
+          <img mat-card-image
+               [@simpleFadeAnimation]="'in'"
+               [src]="product.url"
+               alt="Photo of {{product.name}}">
+          <mat-card-content class="last-child">
+            <mat-list>
+              <h1 mat-subheader>{{product.name}}</h1>
+              <h3 mat-subheader>Price: {{product.price}},- DKK</h3>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions fxLayoutAlign="end" fxLayout="row" fxLayoutGap="10px">
+            <button mat-mini-fab
+                    color="warn"
+                    (click)="deleteProduct(product)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-mini-fab
+                    color="accent"
+                    (click)="editProduct(product)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

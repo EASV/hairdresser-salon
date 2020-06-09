@@ -9,7 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatListModule} from '@angular/material/list';
 import {AuthModule} from '../auth/auth.module';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -24,7 +24,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
   ],
   imports: [
     CommonModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     PublicRoutingModule,
     MatDialogModule,
     MatToolbarModule,

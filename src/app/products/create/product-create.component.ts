@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CreateProduct} from '../shared/product.action';
 import {Product} from '../shared/product';
 import {Navigate} from '@ngxs/router-plugin';
@@ -10,49 +10,38 @@ import {ProductService} from '../shared/product.service';
 import {Observable, Subscription} from 'rxjs';
 import {UploadState} from '../../file/shared/upload.state';
 import {UploadData} from '../../file/shared/upload-data';
-import {first, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-innotech-product-create',
   templateUrl: './product-create.component.html',
   styleUrls: ['./product-create.component.scss']
 })
-export class ProductCreateComponent implements OnInit, OnDestroy {
-  uploadsComplete$: Observable<UploadData>;
-  // Reads the name of the state from the parameter
-  uploadInProgress$: Observable<UploadData>;
-
+export class ProductCreateComponent implements OnInit {
   uid: string;
-  completeSub: Subscription;
-  createForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3)
-    ]),
-    url: new FormControl('', [
-      Validators.required,
-      Validators.minLength(12),
-      Validators.pattern('https?://.+')
-    ]),
-    price: new FormControl('', [
-      Validators.required,
-      Validators.min(0)
-    ])
-  });
+  createForm: FormGroup;
   stay = true;
   constructor(private store: Store,
-              private productService: ProductService) { }
+              private productService: ProductService,
+              private fb: FormBuilder) {
+    this.createForm = this.fb.group({
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3)
+      ]],
+      price: ['', [
+        Validators.required,
+        Validators.min(0)
+      ]],
+      url: ['', [
+        Validators.required,
+        Validators.minLength(12),
+        Validators.pattern('https?://.+')
+      ]]
+    });
+  }
 
   ngOnInit(): void {
     this.uid = this.productService.getUniqueProductId();
-    this.uploadsComplete$ = this.store.select(UploadState.uploadsCompleteById(this.uid));
-    this.completeSub = this.uploadsComplete$.pipe()
-      .subscribe(uploadComplete => {
-        if (uploadComplete) {
-          this.createForm.patchValue({url: uploadComplete.url});
-          this.store.dispatch(new UploadCompleteRegistered(this.uid));
-        }
-      });
   }
 
   submit() {
@@ -61,29 +50,15 @@ export class ProductCreateComponent implements OnInit, OnDestroy {
     this.store.dispatch(new CreateProduct(product, this.stay));
   }
 
-  gotToOverview() {
-    this.store.dispatch(new Navigate([routingConstants.products]));
-  }
-
-  GoToOverviewChanged() {
+  goToOverviewChanged() {
     this.stay = !this.stay;
   }
 
   get name() { return this.createForm.get('name'); }
 
-  get url() { return this.createForm.get('url'); }
-
   get price() { return this.createForm.get('price'); }
 
-  newImageSelected(event) {
-    const fileList: FileList = event.target.files;
-    if (fileList.length > 0) {
-      const file: File = fileList[0];
-      this.store.dispatch(new UploadFile(this.uid, file));
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.completeSub.unsubscribe();
+  imageUploaded(url: string) {
+    this.createForm.patchValue({url});
   }
 }

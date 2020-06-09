@@ -1,12 +1,5 @@
 import {Product} from './product';
 
-// Get Products 1 time and stop listening
-export class GetAllProducts {
-  static readonly type = '[Products] GetAllProducts';
-
-  constructor() {}
-}
-
 // Stream Products and keep listening
 export class StartStreamProducts {
   static readonly type = '[Products] StartStreamProducts';
@@ -17,6 +10,20 @@ export class StartStreamProducts {
 // Stop Stream of Products
 export class StopStreamProducts {
   static readonly type = '[Products] StopStreamProducts';
+
+  constructor() {}
+}
+
+// Start Stream of Products Details
+export class StartStreamProductDetails {
+  static readonly type = '[Products] StartStreamProductDetails';
+
+  constructor(public uId: string) {}
+}
+
+// Stop Stream of Products Details
+export class StopStreamProductDetails {
+  static readonly type = '[Products] StopStreamProductDetails';
 
   constructor() {}
 }
@@ -33,8 +40,8 @@ export class CreateProduct {
   constructor(public product: Product, public goToOverview?: boolean) {}
 }
 
-export class GetProductById {
-  static readonly type = '[Products] GetProductById';
+export class UpdateProduct {
+  static readonly type = '[Products] UpdateProduct';
 
-  constructor(public uid: string) {}
+  constructor(public product: Product) {}
 }

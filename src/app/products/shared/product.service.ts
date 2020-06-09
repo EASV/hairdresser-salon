@@ -25,6 +25,20 @@ export class ProductService {
       })
     );
   }
+
+  updateProduct(product: Product) {
+    return from(
+      this.fs
+        .collection(firestoreConstants.products)
+        .doc(product.uId)
+        .set(product)
+    ).pipe(
+      map(() => {
+        return product;
+      })
+    );
+  }
+
   deleteProduct(product: Product): Observable<Product> {
     return from(
       this.fs
@@ -52,12 +66,12 @@ export class ProductService {
     return this.fs
       .collection<Product>(firestoreConstants.products)
       .doc(uid)
-      .get()
+      .snapshotChanges()
       .pipe(
         map(docAction => {
           return this.createProductFromDoc(
-            docAction.data() as Product,
-            docAction.id);
+            docAction.payload.data() as Product,
+            docAction.payload.id);
           }
         )
       );
@@ -85,13 +99,14 @@ export class ProductService {
 
 
   private createProductFromDoc(data: Product, id: string): Product {
-    const prod: Product = {
-      name: data.name,
-      price: data.price,
-      url: data.url,
-      uId: id
-    };
-    return prod;
+    if (data) {
+      const prod: Product = {
+        name: data.name,
+        price: data.price,
+        url: data.url,
+        uId: id
+      };
+      return prod;
+    }
   }
-
 }

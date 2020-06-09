@@ -18,16 +18,26 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ProductDetailsComponent } from './details/product-details.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FileModule} from '../file/file.module';
-import {MatProgressBar, MatProgressBarModule} from '@angular/material/progress-bar';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {ImageCropperModule} from 'ngx-image-cropper';
+import { ProductEditComponent } from './edit/product-edit.component';
+import { ProductNavbarComponent } from './shared/product-navbar/product-navbar.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [ProductsComponent, ProductCreateComponent, ProductDetailsComponent],
+  declarations: [
+    ProductsComponent,
+    ProductCreateComponent,
+    ProductDetailsComponent,
+    ProductEditComponent,
+    ProductNavbarComponent
+  ],
   imports: [
     CommonModule,
     FileModule,
     ProductsRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
@@ -37,10 +47,10 @@ import {MatProgressBar, MatProgressBarModule} from '@angular/material/progress-b
     MatSnackBarModule,
     MatListModule,
     MatProgressBarModule,
-    ReactiveFormsModule,
     FlexLayoutModule,
     MatToolbarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ]
 })
 export class ProductsModule { }

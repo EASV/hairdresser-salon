@@ -3,7 +3,7 @@ import {UploadData} from './upload-data';
 export class UploadFile {
   static readonly type = '[File] UploadFile';
 
-  constructor(public uid: string, public file: File) {}
+  constructor(public uid: string, public data: File | string) {}
 }
 
 export class UploadCompleteRegistered {

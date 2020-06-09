@@ -5,7 +5,7 @@
       <mat-card-content>
         <span fxLayoutAlign="center"><mat-icon style="font-size: 3em" color="warn" >cloud_upload</mat-icon></span>
         <div *ngFor="let upload of uploadsInProgress">
-          <h4>File: {{upload.file.name}}</h4>
+          <h4>File: {{upload.data.name}}</h4>
           <mat-progress-bar mode="determinate" [value]="upload.percentage" style="height: 20px"></mat-progress-bar>
         </div>
       </mat-card-content>

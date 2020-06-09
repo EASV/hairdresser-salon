@@ -1,27 +1,14 @@
 <div class="main-component"
      fxLayout="column"
      fxLayoutGap="2em">
-  <div [fxFlexOrder]="1">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <h1>
-          Create new Product
-        </h1>
-        <span style="margin-left: 10px"></span>
-        <button mat-raised-button color="accent"
-                aria-label="Products Overview"
-                (click)="gotToOverview()">
-          <mat-icon>list</mat-icon> Product Overview
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-  </div>
+  <app-innotech-product-navbar [title]="'Create new Product'"></app-innotech-product-navbar>
   <div [fxFlexOrder]="2">
     <div fxLayout="row">
-      <div fxFlex="60" fxLayout="column" fxFlexOffset="20" fxLayoutGap="2em">
+      <div fxFlex="30" fxLayout="column" fxFlexOffset="35" fxLayoutGap="2em">
         <div>
-          <form [formGroup]="createForm">
-            <mat-card fxLayout="column wrap" fxLayoutGap="1em">
+          <mat-card fxLayout="column wrap" fxLayoutGap="1em">
+            <app-innotech-image-area [name]="uid" (newImageUploaded)="imageUploaded($event)"></app-innotech-image-area>
+            <form [formGroup]="createForm" (ngSubmit)="submit()">
               <mat-card-content>
                 <mat-form-field fxFlexFill>
                   <mat-label>Name</mat-label>
@@ -33,40 +20,23 @@
                     Name must be 3 or more Characters
                   </mat-error>
                 </mat-form-field>
-
-                <mat-form-field fxFlexFill>
-                  <mat-label>Url</mat-label>
-                  <input matInput placeholder="Type url for image here" formControlName="url" fxFlex="100">
-
-                  <mat-hint>Please remember, the URL for the image must start with "https://"</mat-hint>
-                  <mat-error *ngIf="
-                    url.hasError('minLength') ||
-                    url.hasError('required') ||
-                    url.hasError('pattern')">
-                    Url must be a valid url (starts with https://) with 12 or more Characters
-                  </mat-error>
-                  <input #fileInput accept="image/*" style="display:none;" type="file" (change)="newImageSelected($event)">
-                  <button mat-mini-fab type="button" (click)="fileInput.click()">
-                    <mat-icon>folder</mat-icon>
-                  </button>
-                </mat-form-field>
                 <mat-form-field fxFlexFill>
                   <mat-label>Price</mat-label>
                   <input type="number" matInput placeholder="Type price here" formControlName="price" fxFlex="100">
                   <mat-hint>The price should be higher the 0, we have to make some money</mat-hint>
                   <mat-error *ngIf="
-                    url.hasError('min') ||
-                    url.hasError('required')">
+                    price.hasError('min') ||
+                    price.hasError('required')">
                     Price must be a number above 0
                   </mat-error>
                 </mat-form-field>
               </mat-card-content>
               <mat-card-actions fxLayoutAlign="end">
-                <mat-checkbox color="warn" [checked]="stay" (change)="GoToOverviewChanged()" >Go To Overview on save</mat-checkbox>
-                <button [disabled]='!createForm.valid' mat-raised-button (click)="submit()">Create</button>
+                <mat-checkbox color="warn" [checked]="stay" (change)="goToOverviewChanged()" >Go To Overview on save</mat-checkbox>
+                <button [disabled]='!createForm.valid' mat-raised-button type="submit">Create</button>
               </mat-card-actions>
-            </mat-card>
-          </form>
+            </form>
+          </mat-card>
         </div>
       </div>
     </div>

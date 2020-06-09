@@ -5,7 +5,7 @@ import {ProductState} from '../shared/product.state';
 import {Product} from '../shared/product';
 import {DeleteProduct} from '../shared/product.action';
 import {Navigate} from '@ngxs/router-plugin';
-import {routingConstants} from '../../public/shared/constants';
+import {joinPath, routingConstants} from '../../public/shared/constants';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
 import {ConfirmationDialogComponent} from '../../public/shared/confirmation-dialog/confirmation-dialog.component';
@@ -48,10 +48,10 @@ export class ProductsComponent implements OnInit {
   }
 
   goToDetails(product: Product) {
-
+    this.store.dispatch(new Navigate([joinPath(routingConstants.products, product.uId)]));
   }
 
   gotToAdd() {
-    this.store.dispatch(new Navigate([routingConstants.products + routingConstants.slash + routingConstants.create]));
+    this.store.dispatch(new Navigate([joinPath(routingConstants.products, routingConstants.create)]));
   }
 }

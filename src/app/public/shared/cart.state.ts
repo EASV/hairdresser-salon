@@ -1,6 +1,6 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Injectable} from '@angular/core';
-import {CartItem} from './CartItem';
+import {CartItem} from './cart-item';
 import {AddToCart} from './cart.actions';
 import {AuthStateModel} from '../../auth/shared/auth.state';
 

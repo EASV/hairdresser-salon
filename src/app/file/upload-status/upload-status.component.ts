@@ -13,7 +13,7 @@ import {Observable, Subscription} from 'rxjs';
 export class UploadStatusComponent implements OnInit {
 
   @Select(UploadState.uploadsInProgress)
-  uploadInProgress$: Observable<UploadData[]>
+  uploadInProgress$: Observable<UploadData[]>;
   private sub: Subscription;
 
   constructor(@Inject(MatBottomSheetRef) private ref: any) { }

@@ -1,32 +1,48 @@
 import {Action, Actions, NgxsOnInit, ofActionSuccessful, Selector, State, StateContext, Store} from '@ngxs/store';
-import {catchError, first, takeUntil, tap} from 'rxjs/operators';
+import {catchError, finalize, first, takeUntil, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Product} from './product';
 import {ProductService} from './product.service';
-import {CreateProduct, DeleteProduct, GetAllProducts, GetProductById, StartStreamProducts, StopStreamProducts} from './product.action';
+import {
+  CreateProduct,
+  DeleteProduct,
+  StartStreamProductDetails,
+  StartStreamProducts,
+  StopStreamProductDetails,
+  StopStreamProducts,
+  UpdateProduct
+} from './product.action';
 import {Subject} from 'rxjs';
 import {Navigate, RouterDataResolved} from '@ngxs/router-plugin';
-import {routingConstants, stateKeys} from '../../public/shared/constants';
+import {joinPath, routingConstants, stateKeys} from '../../public/shared/constants';
 import {ErrorOccoured} from '../../error/shared/error.action';
 
 export class ProductStateModel {
   products: Product[];
   productDetail: Product;
+  updateInProgress: Product;
+  updateComplete: Product;
 }
 
 @State<ProductStateModel>({
   name: stateKeys.products,
   defaults: {
     products: [],
-    productDetail: undefined
+    productDetail: undefined,
+    updateInProgress: undefined,
+    updateComplete: undefined
   }
 })
 @Injectable()
 export class ProductState implements NgxsOnInit {
   private stopSteamProducts$: Subject<any>;
+  private stopProductDetails$: Subject<any>;
   urlsForProductStream = [
     routingConstants.slash + routingConstants.products,
     routingConstants.slash + routingConstants.products + routingConstants.slash + routingConstants.create
+  ];
+  urlsForDetailsStream = [
+    joinPath(routingConstants.products)
   ];
   constructor(private productService: ProductService,
               private actions: Actions,
@@ -42,6 +58,41 @@ export class ProductState implements NgxsOnInit {
     return state.productDetail;
   }
 
+  @Selector()
+  static updateInProgress(state: ProductStateModel) {
+    return state.updateInProgress;
+  }
+
+  @Selector()
+  static updateComplete(state: ProductStateModel) {
+    return state.updateComplete;
+  }
+
+  @Action(UpdateProduct)
+  updateProduct({getState, setState, dispatch}: StateContext<ProductStateModel>, action: UpdateProduct) {
+    const state = getState();
+    setState({
+      ...state,
+      updateInProgress: action.product
+    });
+    dispatch(new StopStreamProductDetails());
+    return this.productService
+      .updateProduct(action.product)
+      .pipe(
+        first(),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        }),
+        finalize(() => {
+          setState({
+            ...state,
+            updateInProgress: undefined
+          });
+          dispatch(new StartStreamProductDetails(action.product.uId));
+        })
+      );
+  }
+
   @Action(CreateProduct)
   createProduct({getState, dispatch}: StateContext<ProductStateModel>, action: CreateProduct) {
     return this.productService
@@ -51,50 +102,6 @@ export class ProductState implements NgxsOnInit {
           if (action.goToOverview) {
             dispatch(new Navigate([routingConstants.products]));
           }
-        }),
-        catchError(error => {
-          return dispatch(new ErrorOccoured(error));
-        })
-      );
-  }
-
-  @Action(GetProductById)
-  getProductById({getState, setState, dispatch}: StateContext<ProductStateModel>, action: GetProductById ) {
-    const state = getState();
-    // Get local representation for instant access
-    const productDetail = state.products.find(prod => prod.uId === action.uid)
-    if (productDetail) {
-      setState({
-        ...state,
-        productDetail
-      });
-    }
-    return this.productService
-      .getProductById(action.uid).pipe(
-        first(),
-        tap(product => {
-          setState({
-            ...state,
-            productDetail: product
-          });
-        }),
-        catchError(error => {
-          return dispatch(new ErrorOccoured(error));
-        })
-      );
-  }
-
-  @Action(GetAllProducts)
-  getAllProducts({getState, setState, dispatch}: StateContext<ProductStateModel>) {
-    const state = getState();
-    return this.productService
-      .getProducts().pipe(
-        first(),
-        tap(allProducts => {
-          setState({
-            ...state,
-            products: allProducts
-          });
         }),
         catchError(error => {
           return dispatch(new ErrorOccoured(error));
@@ -130,12 +137,43 @@ export class ProductState implements NgxsOnInit {
     }
   }
 
+  @Action(StartStreamProductDetails)
+  startStreamProductDetails({getState, setState, dispatch}: StateContext<ProductStateModel>, action: StartStreamProductDetails) {
+    this.stopProductDetails$ = new Subject<void>();
+    const state = getState();
+    return this.productService
+      .getProductById(action.uId).pipe(
+        tap(product => {
+          setState({
+            ...state,
+            productDetail: product
+          });
+        }),
+        takeUntil(this.stopProductDetails$),
+        catchError(error => {
+          return dispatch(new ErrorOccoured(error));
+        })
+      );
+  }
+
+  @Action(StopStreamProductDetails)
+  stopStreamProductDetails() {
+    if (this.stopProductDetails$ != null) {
+      this.stopProductDetails$.next();
+      this.stopProductDetails$.complete();
+      this.stopProductDetails$ = null;
+    }
+  }
+
   @Action(DeleteProduct)
   deleteProduct({getState, setState, dispatch}: StateContext<ProductStateModel>, action: DeleteProduct) {
     return this.productService
       .deleteProduct(action.product).pipe(
         catchError(error => {
           return dispatch(new ErrorOccoured(error));
+        }),
+        finalize(() => {
+          dispatch(new StopStreamProductDetails());
         })
       );
   }
@@ -144,13 +182,27 @@ export class ProductState implements NgxsOnInit {
     this.actions.pipe(
       ofActionSuccessful(RouterDataResolved)
     ).subscribe((action: RouterDataResolved) => {
-      if (this.urlsForProductStream.includes(action.event.url )) {
+      const urlParts = action.event.url.split('/');
+      if (urlParts.length > 2 && (urlParts[2] !== routingConstants.create)) {
+        if (this.stopSteamProducts$) {
+          this.store.dispatch(new StopStreamProducts());
+        }
+        if (!this.stopProductDetails$) {
+          this.store.dispatch(new StartStreamProductDetails(urlParts.length === 3 ? urlParts[2] : urlParts[3]));
+        }
+      } else if (this.urlsForProductStream.includes(action.event.url )) {
+        if (this.stopProductDetails$) {
+          this.store.dispatch(new StopStreamProductDetails());
+        }
         if (!this.stopSteamProducts$) {
           this.store.dispatch(new StartStreamProducts());
         }
       } else {
         if (this.stopSteamProducts$) {
           this.store.dispatch(new StopStreamProducts());
+        }
+        if (this.stopProductDetails$) {
+          this.store.dispatch(new StopStreamProductDetails());
         }
       }
     });

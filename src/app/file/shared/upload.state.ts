@@ -9,13 +9,15 @@ import {UploadData} from './upload-data';
 export class UploadStateModel {
   uploadsInProgress: UploadData[];
   uploadsComplete: UploadData[];
+  totalUploadsInProgress: number;
 }
 
 @State<UploadStateModel>({
   name: 'upload',
   defaults: {
     uploadsInProgress: [],
-    uploadsComplete: []
+    uploadsComplete: [],
+    totalUploadsInProgress: 0
   }
 })
 @Injectable()
@@ -32,6 +34,11 @@ export class UploadState {
   @Selector()
   static uploadsInProgress(state: UploadStateModel) {
     return state.uploadsInProgress;
+  }
+
+  @Selector()
+  static totalUploadsInProgress(state: UploadStateModel) {
+    return state.totalUploadsInProgress;
   }
 
   static uploadsCompleteById(id: string) {
@@ -78,6 +85,7 @@ export class UploadState {
       setState({
         ...state,
         uploadsInProgress: newUploadsInProgress,
+        totalUploadsInProgress: newUploadsInProgress.length
       });
     }
   }
@@ -94,7 +102,8 @@ export class UploadState {
     setState({
       ...state,
       uploadsInProgress: uploadsInProgressMinusCompleted,
-      uploadsComplete: newUploadsCompleted
+      uploadsComplete: newUploadsCompleted,
+      totalUploadsInProgress: uploadsInProgressMinusCompleted.length
     });
     return;
   }
@@ -136,7 +145,3 @@ export class UploadState {
     });
   }
 }
-
-
-
-

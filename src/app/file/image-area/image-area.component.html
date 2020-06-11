@@ -1,0 +1,101 @@
+<div>
+  <div *ngIf="!imageBeingChanged"
+       fxFlexAlign="center"
+       fxLayout="column">
+    <input #fileInput
+           accept="image/*"
+           style="display:none;"
+           type="file"
+           (change)="newImageSelected($event)">
+    <img mat-card-image
+         [fxHide]="!loaded || error"
+         fxFlex="405px"
+         (load)="loaded = true"
+         (error)="error = true"
+         [@simpleFadeAnimation]="'in'"
+         [src]="imageUrl"
+         alt="Image not Found">
+    <div
+      fxLayout="row"
+      fxFlex="405px"
+      fxFlexAlign="center"
+      [fxHide]="loaded || error">
+      <div
+        fxLayoutAlign="center"
+        fxLayout="column">
+        <mat-spinner
+          color="accent"
+          [mode]="'indeterminate'">
+        </mat-spinner>
+        <h3>Loading image...</h3>
+      </div>
+    </div>
+    <div
+      fxLayout="row"
+      fxFlex="405px"
+      fxFlexAlign="center"
+      [fxHide]="!error">
+      <div
+        fxLayoutAlign="end"
+        fxLayout="column">
+        <div fxFlex="160px" fxFlexAlign="center">
+          <mat-icon color="primary" class="icon-15x">image</mat-icon>
+        </div>
+        <h3>No Image Selected</h3>
+      </div>
+    </div>
+    <div fxFlexAlign="center">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="changeImage()">
+        Select New Image <mat-icon>face</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="imageBeingChanged"
+        fxFlexAlign="center"
+        fxLayout="column">
+    <div
+      fxLayout="row"
+      fxFlex="405px"
+      fxFlexAlign="center"
+      [fxHide]="loaded">
+      <div
+        fxLayoutAlign="center"
+        fxLayout="column">
+        <mat-spinner
+          color="accent"
+          [mode]="'indeterminate'">
+        </mat-spinner>
+        <h3>Loading image...</h3>
+      </div>
+    </div>
+    <image-cropper
+      [fxHide]="!loaded"
+      [imageFile]="originalFile"
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="4 / 3"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="loaded = true"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
+    <div fxFlexAlign="center">
+      <button mat-raised-button
+              color="warn"
+              (click)="cancelImageChange()">
+        Cancel <mat-icon>cancel</mat-icon>
+      </button>
+      <span style="margin-left: 10px"></span>
+      <button [fxHide]="!loaded"
+              mat-raised-button
+              color="accent"
+              (click)="saveImage()">
+        Save <mat-icon>save</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

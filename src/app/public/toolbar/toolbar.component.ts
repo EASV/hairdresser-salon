@@ -26,8 +26,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private uploadSubscription: Subscription;
   @Select(ErrorState.errors)
   errors$: Observable<TimedError[]>;
-  @Select(UploadState.uploadsInProgress)
-  uploadsInProgress: Observable<UploadData[]>;
+  @Select(UploadState.totalUploadsInProgress)
+  totalUploadsInProgress$: Observable<number>;
   @Select(AuthState.loggedInUser)
   authUser$: Observable<AuthUser>;
   @Output()
@@ -47,10 +47,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             .subscribe(() => this.store.dispatch(new ErrorRegisteredByUser(nextError)));
         }
       });
-    this.uploadSubscription = this.uploadsInProgress
-      .subscribe(uploadsInProgress => {
-        if (uploadsInProgress && uploadsInProgress.length > 0) {
-          this.bottomSheet.open(UploadStatusComponent, {hasBackdrop: false, disableClose: true});
+    this.uploadSubscription = this.totalUploadsInProgress$
+      .subscribe(totalUploads => {
+        if (totalUploads > 0) {
+          this.bottomSheet.open(UploadStatusComponent, {hasBackdrop: true, disableClose: true});
+        } else {
+          this.bottomSheet.dismiss();
         }
       });
   }

@@ -1,0 +1,98 @@
+<div class="main-component"
+     fxLayout="column"
+     fxLayoutGap="2em"
+     *ngIf="originalProduct" >
+  <app-innotech-product-navbar [title]="'Editing product with Name: \'' + originalProduct.name + '\''"></app-innotech-product-navbar>
+  <div [fxFlexOrder]="3" fxLayout="row">
+    <div fxFlex="30" fxLayout="column" fxFlexOffset="35" fxLayoutGap="2em">
+      <mat-card fxLayout="column" fxLayoutGap="1em">
+        <app-innotech-image-area
+          [imageUrl]="originalProduct.url"
+          [name]="originalProduct.uId"
+          (newImageUploaded)="imageUrlChanged($event)"></app-innotech-image-area>
+        <form [formGroup]="editForm" (ngSubmit)="submit()">
+          <mat-card-content>
+            <div  [fxHide]="updateInProgress$ | async"
+                  fxLayout="column">
+              <div fxLayout="row">
+                <mat-form-field fxFlexFill>
+                  <mat-label>Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    placeholder="type product name here"
+                    formControlName="name"
+                    fxFlex="100">
+                  <button mat-button
+                          *ngIf="originalProduct.name !== name.value"
+                          matSuffix
+                          mat-icon-button
+                          aria-label="Clear"
+                          (click)="patchFromOriginal('name')">
+                    <mat-icon>update</mat-icon>
+                  </button>
+                  <mat-hint >
+                    Pick a Good name of 3 or more characters
+                  </mat-hint>
+
+                  <mat-error *ngIf="
+                    name.hasError('minLength') ||
+                    name.hasError('required')">
+                    Name must be 3 or more Characters
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <span fxFlex="20px"></span>
+              <div fxLayout="row">
+                <mat-form-field fxFlexFill>
+                  <mat-label>Price</mat-label>
+                  <input type="number" matInput placeholder="Type price here" formControlName="price">
+                  <button mat-button
+                          *ngIf="originalProduct.price !== price.value"
+                          matSuffix
+                          mat-icon-button
+                          aria-label="Clear"
+                          (click)="patchFromOriginal('price')">
+                    <mat-icon>update</mat-icon>
+                  </button>
+                  <mat-hint>The price should be higher the 0, we have to make some money</mat-hint>
+                  <mat-error *ngIf="
+                    price.hasError('min') ||
+                    price.hasError('required')">
+                    Price must be a number above 0
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlexAlign="center"
+                 fxLayout="column">
+              <div
+                fxLayout="row"
+                fxFlex="167px"
+                fxFlexAlign="center"
+                [fxHide]="!(updateInProgress$ | async)">
+                <div
+                  fxLayoutAlign="center"
+                  fxLayout="column">
+                  <mat-spinner
+                    fxFlexAlign="center"
+                    color="accent"
+                    [mode]="'indeterminate'">
+                  </mat-spinner>
+                  <h3>Saving Product data...</h3>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions fxLayoutAlign="end">
+            <button
+              [disabled]='!editForm.valid || sameAsOriginal() || (updateInProgress$ | async)'
+              mat-raised-button
+              type="submit">Update
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

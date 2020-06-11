@@ -1,17 +1,14 @@
 <div fxLayout="column"
      fxLayoutGap="2em">
-  <div [fxFlexOrder]="1" *ngIf="uploadInProgress$ | async; let uploadsInProgress;">
+  <div [fxFlexOrder]="1">
     <mat-card>
       <mat-card-content>
         <span fxLayoutAlign="center"><mat-icon style="font-size: 3em" color="warn" >cloud_upload</mat-icon></span>
-        <div *ngFor="let upload of uploadsInProgress">
+        <div *ngFor="let upload of uploadInProgress$ | async">
           <h4>File: {{upload.data.name}}</h4>
           <mat-progress-bar mode="determinate" [value]="upload.percentage" style="height: 20px"></mat-progress-bar>
         </div>
       </mat-card-content>
-      <mat-card-actions fxLayoutAlign="end">
-        <button mat-raised-button (click)="close()">Ok</button>
-      </mat-card-actions>
     </mat-card>
 
   </div>

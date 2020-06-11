@@ -1,0 +1,16 @@
+<div [fxFlexOrder]="1">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <button mat-raised-button color="accent"
+              aria-label="Products Overview"
+              (click)="gotToOverview()">
+        <mat-icon>list</mat-icon> Product Overview
+      </button>
+      <span style="margin-left: 50px"></span>
+      <h1>
+        {{title}}
+      </h1>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
